@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import queryString from 'query-string';
+import Login from './components/Login';
 
 class App extends Component {
 
@@ -36,7 +37,7 @@ class App extends Component {
   }
 
   render() {
-    let listOfResult;
+    /* let listOfResult;
     if (this.state.bool) {
     const annonser = this.state.searchResult.tracks.items;
     console.log(annonser)
@@ -48,10 +49,12 @@ class App extends Component {
         <hr></hr>
       </div>
     ))
-  }
+  } */
     return (
       <div className="App">
-        <button onClick={() => window.location = 'http://localhost:8888/login'}>Sign in with spotify</button>
+
+        <Login />
+        {/* <button onClick={() => window.location = 'http://localhost:8888/login'}>Sign in with spotify</button>
         <input
           type="text"
           name="searchTrack"
@@ -60,7 +63,7 @@ class App extends Component {
         />
         <button onClick={this.onHandleSearch}>search</button>
         <h2>Search Result</h2>
-        { listOfResult }
+        { listOfResult } */}
       </div>
     );
   }
