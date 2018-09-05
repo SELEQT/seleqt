@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import queryString from 'query-string';
 import Login from './components/Login';
+import QueueWindow from './components/QueueWindow';
 
 class App extends Component {
 
@@ -10,7 +11,9 @@ class App extends Component {
     accessToken: "",
     searchResult: {},
     searchTrack: "",
-    bool: false
+    bool: false,
+    queuedTracks: [],
+    goToQueue: false
   }
 
   componentDidMount() {
@@ -36,34 +39,49 @@ class App extends Component {
     .then(data => this.setState({searchResult: data, bool: true}))
   }
 
+  addToQueue = (track) => {
+    let songs = [...this.state.queuedTracks];
+    track.votes = 0;
+    songs.push(track);
+    this.setState({ queuedTracks: songs })
+  }
+
+
   render() {
-    /* let listOfResult;
+   let listOfResult;
     if (this.state.bool) {
     const annonser = this.state.searchResult.tracks.items;
-    console.log(annonser)
     listOfResult = annonser.map(annons => (
       <div key={annons.id}>
-        {annons.name}
-        <p>{annons.artists[0].name}</p>
+      <p><strong>{annons.name}</strong></p>
+        <p><em>{annons.artists[0].name}</em></p>
         <img src={annons.album.images[2].url} />
+        <br/>
+        <button onClick={ () =>  this.addToQueue(annons)}> Add to queue </button>
         <hr></hr>
       </div>
     ))
-  } */
+  } 
     return (
       <div className="App">
 
-        <Login />
-        {/* <button onClick={() => window.location = 'http://localhost:8888/login'}>Sign in with spotify</button>
-        <input
-          type="text"
-          name="searchTrack"
-          value={this.state.searchTrack}
-          onChange={this.onHandleSearchInput}
-        />
-        <button onClick={this.onHandleSearch}>search</button>
-        <h2>Search Result</h2>
-        { listOfResult } */}
+        {/* <Login /> */}
+        {!this.state.goToQueue ?
+          <div> 
+            <button onClick={() => window.location = 'http://localhost:8888/login'}>Sign in with spotify</button>
+            <input
+              type="text"
+              name="searchTrack"
+              value={this.state.searchTrack}
+              onChange={this.onHandleSearchInput}
+            />
+            <button onClick={this.onHandleSearch}> Search </button>
+            <h2>Search Result</h2>
+            { listOfResult }
+          </div>
+        : 
+        <QueueWindow queuedTracks={this.state.queuedTracks} />}
+        <button onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Switch </button> 
       </div>
     );
   }
