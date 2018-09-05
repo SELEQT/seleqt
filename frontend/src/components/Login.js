@@ -1,5 +1,6 @@
 import React from 'react';
 import seleqt from '../images/seleqt.png';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 
 function Login() {
     return (
@@ -29,7 +30,8 @@ function Login() {
                 />
             </div>
 
-            <button className="submit btn">Submit</button>
+            {/* <button className="submit btn">Submit</button> */}
+            <Link  to="/firstTimeUser"><button className="frontPageBtn btn">Submit</button> </ Link>
 
         </div>
     )
