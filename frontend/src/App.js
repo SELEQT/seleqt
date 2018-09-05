@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import './App.css';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 import queryString from 'query-string';
 import Login from './components/Login';
+import SpotifyLogin from './components/SpotifyLogin';
+import "./App.css";
+
 
 class App extends Component {
 
@@ -11,19 +14,9 @@ class App extends Component {
     searchResult: {},
     searchTrack: "",
     bool: false
-  }
+  };
 
-  componentDidMount() {
-    let parsed = queryString.parse(window.location.search);
-    let accessToken = parsed.access_token;
-    this.setState({accessToken: accessToken});
-
-    fetch('https://api.spotify.com/v1/me/player/devices', {
-      headers: {'Authorization': 'Bearer ' + accessToken}
-    }).then(response => response.json())
-    .then(data => console.log(data)
-    )
-  }
+  
 
   onHandleSearchInput = (event) => {
     this.setState({ [event.target.name]: event.target.value })
@@ -51,20 +44,15 @@ class App extends Component {
     ))
   } */
     return (
-      <div className="App">
-
-        <Login />
-        {/* <button onClick={() => window.location = 'http://localhost:8888/login'}>Sign in with spotify</button>
-        <input
-          type="text"
-          name="searchTrack"
-          value={this.state.searchTrack}
-          onChange={this.onHandleSearchInput}
-        />
-        <button onClick={this.onHandleSearch}>search</button>
-        <h2>Search Result</h2>
-        { listOfResult } */}
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <Login />
+          <SpotifyLogin />
+           <div>
+             <Link  to="/firstTimeUser"><button> Test click </button> </ Link>
+           </div>
+        </div>
+      </BrowserRouter>
     );
   }
 }
