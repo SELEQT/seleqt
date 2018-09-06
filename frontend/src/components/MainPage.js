@@ -91,7 +91,7 @@ class MainPage extends Component {
         const masterPlaylist = this.state.masterPlaylist.tracks.items;
         console.log(masterPlaylist)
         playlist = masterPlaylist.map(item => (
-            <div onClick={() => this.play(item.track.id)}>
+            <div>
                 {item.track.name}
             </div>
         ))
