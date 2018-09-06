@@ -48,9 +48,6 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-           {/* <div>
-             <Link  to="/firstTimeUser"><button> Test click </button> </ Link>
-           </div> */}
            <Route exact path="/" component={Login} />
            <Route path="/firstTimeUser" component={SpotifyLogin} />
            <Route path="/mainPage" component={MainPage} />
