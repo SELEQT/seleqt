@@ -32,7 +32,7 @@ class MainPage extends Component {
         }
       
         onHandleSearch = () => {
-          fetch(`https://api.spotify.com/v1/search?query=${this.state.searchTrack}&type=track&market=SE&offset=0&limit=3`, {
+          fetch(`https://api.spotify.com/v1/search?query=${this.state.searchTrack}&type=track&market=SE&offset=0&limit=15`, {
             headers: {'Authorization': 'Bearer ' + this.state.accessToken}
           }).then(response => response.json())
           .then(data => this.setState({searchResult: data, gotData: true}))
