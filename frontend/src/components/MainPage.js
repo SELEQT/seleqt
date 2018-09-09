@@ -11,7 +11,9 @@ class MainPage extends Component {
           queuedTracks: [],
           goToQueue: false,
           popped: false,
-          currentLoop: ""
+          currentLoop: "",
+          devices: "cf2b62f3ed26ac4b74beaabd28a5d1a9fc46f1bd",
+          playing: false
         }
       
         addToQueue = (track) => {
@@ -25,13 +27,22 @@ class MainPage extends Component {
 
             let parsed = queryString.parse(window.location.search);
             let accessToken = parsed.access_token;
-            this.setState({accessToken: accessToken});
+            this.setState({
+                accessToken: accessToken,
+                popped : false,
+                playing: true
+            
+            });
             let duration = this.state.queuedTracks[0].duration_ms;
             let startTime;
-            this.setState({ popped : false });
-            
-            console.log(duration);
-            fetch('https://api.spotify.com/v1/me/player/play?device_id=add2238910e276e27e693896d661b1257859c046', {
+            let difference = 0;
+
+            /* Set variables for now playing progress bar */ 
+            const progressBar = document.querySelector('.myBar');
+            let width = 0;
+
+            console.log(this.state.queuedTracks);
+            fetch(`https://api.spotify.com/v1/me/player/play?device_id=${this.state.devices}`, {
                 method: 'PUT',
                 body: JSON.stringify({
                     "uris": [`${this.state.queuedTracks[0].uri}`],
@@ -41,18 +52,22 @@ class MainPage extends Component {
             })
             .then( startTime = Date.now() )
             const s = setInterval(() =>{
-                console.log("log");
-                if (Date.now() - startTime >= duration && !this.state.popped){
+                difference = Date.now() - startTime;
+                if (difference >= duration && !this.state.popped){
                     let songs = [...this.state.queuedTracks];
                     songs.shift();
                     this.setState({ queuedTracks: songs })
                     this.setState({ popped : true });    
                 };
                 if (this.state.popped) {
-                    console.log("stop");
                     this.middleware();
                     clearInterval(s)
                     
+                }
+                // console.log(difference % duration)
+                if ((difference % (duration/1000)) < 10 ) {
+                    width += 0.1;
+                    progressBar.style.width = width + '%';
                 }
             }, 10)
         //    .then(this.setState({ currentLoop : setInterval(this.popp(duration, startTime), 10)}))
@@ -98,8 +113,29 @@ class MainPage extends Component {
                         <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Switch </button>
                         <button onClick={() => this.playPlaylist()}>hello</button>
                     </nav>
+                    
                     <div className="nowPlaying">
-                        now playing
+                        
+                        <div className="nowPlayingFlexContainer">
+                            <div className="nowPlayingFlexItem">
+                            { this.state.playing &&
+                                <a href={this.state.queuedTracks[0].uri}><img className="nowPlayingImage" alt="Track image" src={this.state.queuedTracks[0].album.images[2].url} /></a>  
+                            }
+                            </div>
+                            <div className="nowPlayingFlexItem"> 
+                                <div>
+                                { this.state.playing &&
+                                    <p>Now playing: {this.state.queuedTracks[0].name} by {this.state.queuedTracks[0].artists[0].name}</p>
+                                }
+                                </div>
+                                <div className="myProgress">
+                                    { this.state.playing && 
+                                        <div className="emptyMyBar"></div>
+                                    }
+                                    <div className="myBar"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </footer>
             </div>
