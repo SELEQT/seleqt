@@ -52,8 +52,11 @@ h2 {
   margin: 1rem;
 }
 
-.btn {
+.frontPageBtn {
   margin-top: 10rem;
+}
+
+.btn {
   padding: 1rem;
   min-width: 6rem; 
   background-color: lightgreen;
