@@ -49,6 +49,7 @@ class MainPage extends Component {
             <div key={annons.id}>
             <p><strong>{annons.name}</strong></p>
               <p><em>{annons.artists[0].name}</em></p>
+       
               <img src={annons.album.images[2].url} />
               <br/>
               <button onClick={ () =>  this.addToQueue(annons)}> Add to queue </button>
