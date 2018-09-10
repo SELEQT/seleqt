@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom";
-import querySearch from 'stringquery';
+import queryString from 'query-string';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import Menu from './Menu';
 import QueueWindow from './QueueWindow';
@@ -30,7 +30,8 @@ class MainPage extends Component {
 
         playPlaylist = () => {
 
-            let accessToken = querySearch(this.props.location.access_token);
+            let parsed = queryString.parse(window.location.search);
+            let accessToken = parsed.access_token;
             this.setState({
                 accessToken: accessToken,
                 popped : false,
