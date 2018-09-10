@@ -19,6 +19,7 @@ class MainPage extends Component {
           let parsed = queryString.parse(window.location.search);
           let accessToken = parsed.access_token;
           this.setState({accessToken: accessToken});
+
         }
         
       
