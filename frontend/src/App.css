@@ -3,7 +3,7 @@
 }
 
 html {
-  border: 3vh solid lightgreen;
+  border: 0.5vh solid lightgreen;
   height: 100vh;
   position: relative;
   display:flex;
@@ -133,7 +133,8 @@ html {
   width: 0%;
   height: 10px;
   border-radius: 15px;
-  background: linear-gradient(to right, #cc2b5e 20%, #753a88 70%);
+  background: linear-gradient(to right, #fe8c00 20%, #f83600 70%);
+  /* background: linear-gradient(to right, #cc2b5e 20%, #753a88 70%); */
   z-index: 1;
 }
 

@@ -12,7 +12,7 @@ class MainPage extends Component {
           goToQueue: false,
           popped: false,
           currentLoop: "",
-          devices: "cf2b62f3ed26ac4b74beaabd28a5d1a9fc46f1bd",
+          devices: "add2238910e276e27e693896d661b1257859c046",
           playing: false
         }
       
