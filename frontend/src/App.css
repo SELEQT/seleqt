@@ -3,14 +3,15 @@
 }
 
 html {
-  border: 3vh solid lightgreen;
+  border: 0.5vh solid rgb(239, 147, 0, 1);
+  border-radius: 5px, 5px, 1px;
   height: 100vh;
   position: relative;
   display:flex;
   flex-direction: column;
   background-color: white;
   font-family: Arial, Helvetica, sans-serif;
-  color: white;
+  color: rgba(236, 236, 236, 1);
   background-color: rgba(68, 68, 68, 1);
 }
 
@@ -54,11 +55,11 @@ html {
 .mainPage {
   display: flex;
   flex-direction: column;
-  height: 94vh;
+  height: 99vh;
 }
 
 .header {
-  height: 10vh;
+  height: 14vh;
   margin-top: 0px;
   background-color: rgba(68, 68, 68, 1);
 }
@@ -68,14 +69,18 @@ html {
 }
 
 .switch {
-  min-width: 6rem; 
-  background-color: lightgreen;
+  min-width: 6rem;
+  min-height: 2.5rem;
+  background: rgb(239, 147, 0);  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #f83600, #rgb(239, 147, 0));  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #f83600, rgb(239, 147, 0)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   border: none;
 }
 
 .footer {
   background-color: rgba(68, 68, 68, 1);
-  height: 30vh;
+  height: 25vh;
   flex: 1;
   display:flex;
   flex-direction: column;
@@ -85,7 +90,7 @@ html {
   width: 100%;
   height: 50%;
   flex: 1;
-  background-color: lightsalmon;
+  background-color: rgba(93, 93, 93, 1);
 }
 
 .nav {
@@ -105,7 +110,7 @@ html {
   flex-direction: column;
   /* border: 1px solid black */
   overflow: hidden;
-  box-shadow: 0 1px 1px -1px gray;
+  box-shadow: 1px 2px 2px -1px rgb(40, 40, 40, 1);
   /* background-image: linear-gradient(to bottom right, rgba(0, 195, 255, 0.589),rgba(143, 6, 255, 0.603)); */
 }
 
