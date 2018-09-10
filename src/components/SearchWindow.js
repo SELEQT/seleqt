@@ -16,8 +16,7 @@ class MainPage extends Component {
         }
       
         componentDidMount() {
-          let parsed = querySearch(this.props.location.search);
-          let accessToken = parsed.access_token;
+          let accessToken = querySearch(this.props.location.access_token);
           this.setState({accessToken: accessToken});
 
         }
