@@ -1,17 +1,21 @@
 {
-  "name": "oauth-bridge-template",
-  "version": "1.0.0",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
+  "name": "marcus-test",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "dotenv": "^6.0.0",
-    "express": "^4.15.4",
-    "querystring": "^0.2.0",
+    "query-string": "^6.1.0",
+    "react": "^16.4.2",
     "react-burger-menu": "^2.5.2",
-    "request": "^2.81.0"
+    "react-dom": "^16.4.2",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "devDependencies": {
     "eslint": "^5.5.0",
