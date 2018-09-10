@@ -4,7 +4,7 @@ class SpotifyLogin extends Component {
 
   render () {
     return (
-      <div>
+      <div className="center">
 
         <h2>Connect to AW-ACADEMY</h2>
         <p>Password: Melodifestivalen</p> 

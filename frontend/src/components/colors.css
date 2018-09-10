@@ -1,0 +1,23 @@
+
+
+used Colors {
+
+    /* Main BACKGROUND color */
+    color: rgba(68, 68, 68, 1);
+
+    /* Lighter BACKGROUND color */
+    color: rgba(93, 93, 93, 1);
+
+    /* Lightest Background color */
+    color: rgb(107, 107, 107);
+
+    /* Main BOX-SHADOW color */
+    color: rgba(40, 40, 40, 1);
+
+    /* Main TEXT color */
+    color: rgba(236, 236, 236, 1);
+
+    /* Main DETAIL color */
+    color: rgba(239, 147, 0, 1);
+
+}
