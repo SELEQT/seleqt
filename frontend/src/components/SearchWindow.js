@@ -19,23 +19,21 @@ class MainPage extends Component {
           let parsed = queryString.parse(window.location.search);
           let accessToken = parsed.access_token;
           this.setState({accessToken: accessToken});
-      
-          // fetch('https://api.spotify.com/v1/me/player/devices', {
-          //   headers: {'Authorization': 'Bearer ' + accessToken}
-          // }).then(response => response.json())
-          // .then(data => console.log(data)
-          // )
+
         }
+        
       
         onHandleSearchInput = (event) => {
           this.setState({ [event.target.name]: event.target.value })
-        }
-      
-        onHandleSearch = () => {
-          fetch(`https://api.spotify.com/v1/search?query=${this.state.searchTrack}&type=track&market=SE&offset=0&limit=20`, {
+          if (event.target.value) {
+            fetch(`https://api.spotify.com/v1/search?query=${event.target.value}&type=track&market=SE&offset=0&limit=15`, {
             headers: {'Authorization': 'Bearer ' + this.state.accessToken}
           }).then(response => response.json())
           .then(data => this.setState({searchResult: data, gotData: true}))
+          .catch(error => {
+            console.log("No Results");
+          })
+          }
         }
 
         addToQueue = (track) => {
@@ -67,7 +65,7 @@ class MainPage extends Component {
                     value={this.state.searchTrack}
                     onChange={this.onHandleSearchInput}
                   />
-                  <button onClick={this.onHandleSearch}> Search </button>
+                  {/* <button onClick={this.onHandleSearch}> Search </button> */}
                   <h2>Search Result</h2>
                   { listOfResult }
                 </div>

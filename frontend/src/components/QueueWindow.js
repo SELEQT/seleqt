@@ -52,7 +52,8 @@ class QueueWindow extends Component {
             <p className="length"> {this.convertToMinSeC(annons.duration_ms)} </p>
         </div>
         <p className="voteNumber"> {annons.votes} </p>
-        <button className="upvote"onClick={ () =>  this.upvote(annons)}> V</button>
+
+        <i className="far fa-arrow-alt-circle-up upvote" onClick={ () =>  this.upvote(annons)}> </i>
         {/* <button onClick={ () =>  this.removeFromQueue(annons)}> Remove from queue </button>  */}
       </div>
     ))
