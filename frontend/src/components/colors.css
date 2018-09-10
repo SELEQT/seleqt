@@ -2,8 +2,19 @@
 
 used Colors {
 
-    /* Main background color*/
-    color: rgba(68, 68, 68, 0);
+    /* Main BACKGROUND color*/
+    color: rgba(68, 68, 68, 1);
 
+    /* Lighter BACKGROUND color (window)*/
+    color: rgba(93, 93, 93, 1);
+
+    /* Main BOX-SHADOW color */
+    color: rgba(40, 40, 40, 1);
+
+    /* Main TEXT color */
+    color: rgba(236, 236, 236, 1);
+
+    /* Main DETAIL color */
+    color: rgba(239, 147, 0, 1);
 
 }
