@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import ReactDOM from "react-dom";
 import queryString from 'query-string';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
+import Menu from './Menu';
 import QueueWindow from './QueueWindow';
 import SearchWindow from './SearchWindow';
 import seleqt from '../images/seleqt.png';
+
 
 class MainPage extends Component {
 
@@ -11,7 +14,7 @@ class MainPage extends Component {
           queuedTracks: [],
           goToQueue: false,
         }
-      
+
         addToQueue = (track) => {
             let songs = [...this.state.queuedTracks];
             track.votes = 0;
@@ -19,14 +22,16 @@ class MainPage extends Component {
             console.log(track);
             this.setState({ queuedTracks: songs })
         }
-      
+
         render() {
           return (
             <div className="center mainPage">
                 <header className="header"> 
+                    <Menu />
                     <img className="logo" alt="sd" src={seleqt} />
+
                 </header>
-                
+
                 {!this.state.goToQueue ?
                 <SearchWindow addToQueue={this.addToQueue}/>
                 : 
