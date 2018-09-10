@@ -134,7 +134,6 @@ class MainPage extends Component {
                     <nav className="nav">
                         <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Switch </button>
                         <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Switch </button>
-                        <button onClick={() => this.playPlaylist()}>hello</button>
                     </nav>
                     
                     <div className="nowPlaying">
