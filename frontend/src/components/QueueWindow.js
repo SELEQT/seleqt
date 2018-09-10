@@ -44,15 +44,15 @@ class QueueWindow extends Component {
     const annonser = [...this.state.tracks];
     queue = annonser.map(annons => (
       <div key={annons.id} className="track">
-        <p className="voteNumber"> {annons.votes} </p>
         <img className="songImage" src={annons.album.images[2].url} />
         <div className="info">
-            <p className="songName"><strong>{annons.name}</strong></p>
-            <p className="artistName"><em>{annons.artists[0].name} </em></p>
-            {/* <p className="artistName"><em> {annons.album.name}</em></p> */}
+            <p className="songName">{annons.name}</p>
+            <p className="artistName">{annons.artists[0].name} -</p>
+            <p className="albumName">{annons.album.name}</p>
             <p className="length"> {this.convertToMinSeC(annons.duration_ms)} </p>
         </div>
-        <button className="upvote"onClick={ () =>  this.upvote(annons)}> Upvote </button>
+        <p className="voteNumber"> {annons.votes} </p>
+        <button className="upvote"onClick={ () =>  this.upvote(annons)}> V</button>
         {/* <button onClick={ () =>  this.removeFromQueue(annons)}> Remove from queue </button>  */}
       </div>
     ))
@@ -60,8 +60,8 @@ class QueueWindow extends Component {
     return (
       <div className="window">
         <div className="queueHeader">
-            <h2> Active Queue </h2>
-            <p> <em> at 'Restaurant-name' </em> </p>
+            <h1> Active Queue </h1>
+            <h2> at 'Restaurant-name' </h2>
         </div>
         <div className="queue">
             { queue } 

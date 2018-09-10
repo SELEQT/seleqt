@@ -20,11 +20,11 @@ class MainPage extends Component {
           let accessToken = parsed.access_token;
           this.setState({accessToken: accessToken});
       
-          fetch('https://api.spotify.com/v1/me/player/devices', {
-            headers: {'Authorization': 'Bearer ' + accessToken}
-          }).then(response => response.json())
-          .then(data => console.log(data)
-          )
+          // fetch('https://api.spotify.com/v1/me/player/devices', {
+          //   headers: {'Authorization': 'Bearer ' + accessToken}
+          // }).then(response => response.json())
+          // .then(data => console.log(data)
+          // )
         }
       
         onHandleSearchInput = (event) => {
@@ -40,7 +40,7 @@ class MainPage extends Component {
 
         addToQueue = (track) => {
           console.log(track);
-            this.props.addToQueue(track);
+          this.props.addToQueue(track);
         }
       
         render() {
