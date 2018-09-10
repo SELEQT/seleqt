@@ -9,7 +9,7 @@ class SpotifyLogin extends Component {
         <h2>Connect to AW-ACADEMY</h2>
         <p>Password: Melodifestivalen</p> 
 
-        <button className="btn" onClick={() => window.location = 'http://localhost:8888/login'}>
+        <button className="btn" onClick={() => window.location = 'https://whispering-plateau-16661.herokuapp.com/'}>
           Sign in with Spotify
         </button>
       </div>
