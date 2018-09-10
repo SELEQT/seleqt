@@ -3,9 +3,7 @@ import { BrowserRouter, Route, Link } from 'react-router-dom';
 import queryString from 'query-string';
 import MainPage from './components/MainPage';
 import Login from './components/Login';
-import MainPage from './components/MainPage';
 import SpotifyLogin from './components/SpotifyLogin';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
 
 class App extends Component {
 
