@@ -105,11 +105,23 @@ html {
   padding-right: 2rem;
 }
 
+.nowPlayingFlexItem:nth-of-type(2) p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60vw;
+  font-size: 0.75em;
+}
+
 .nowPlaying {
   width: 100%;
   height: 50%;
   flex: 1;
   background-color:rgba(0, 0, 0, 0.7);
+}
+
+.remainingTime {
+  padding-top: 1em;
 }
 
 .myProgress {
