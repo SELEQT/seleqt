@@ -9,14 +9,15 @@ class MainPage extends Component {
 
         state = {
           queuedTracks: [],
-          goToQueue: false
+          goToQueue: false,
         }
       
         addToQueue = (track) => {
-          let songs = [...this.state.queuedTracks];
-          track.votes = 0;
-          songs.push(track);
-          this.setState({ queuedTracks: songs })
+            let songs = [...this.state.queuedTracks];
+            track.votes = 0;
+            songs.push(track);
+            console.log(track);
+            this.setState({ queuedTracks: songs })
         }
       
         render() {

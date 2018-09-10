@@ -29,26 +29,43 @@ class QueueWindow extends Component {
     this.order();
   }
 
+  convertToMinSeC = (ms) => {
+    let s = ms / 1000;
+    let restS = s % 60;
+    let wholeMinS = s - restS;
+    let min = wholeMinS / 60;
+    
+    return min + "m " + Math.round(restS) + "s";
+  }
+
   render() {
    let queue;
     if (this.state.tracks) {
     const annonser = [...this.state.tracks];
     queue = annonser.map(annons => (
       <div key={annons.id} className="track">
-      <p className="songName"><strong>{annons.name}</strong></p>
-        <button className="upvote"onClick={ () =>  this.upvote(annons)}> Upvote </button>
-        <p className="artistName"><em>{annons.artists[0].name}</em></p>
+        <p className="voteNumber"> {annons.votes} </p>
         <img className="songImage" src={annons.album.images[2].url} />
-        <p className="voteNumber"> Votes: {annons.votes} </p>
+        <div className="info">
+            <p className="songName"><strong>{annons.name}</strong></p>
+            <p className="artistName"><em>{annons.artists[0].name} </em></p>
+            {/* <p className="artistName"><em> {annons.album.name}</em></p> */}
+            <p className="length"> {this.convertToMinSeC(annons.duration_ms)} </p>
+        </div>
+        <button className="upvote"onClick={ () =>  this.upvote(annons)}> Upvote </button>
         {/* <button onClick={ () =>  this.removeFromQueue(annons)}> Remove from queue </button>  */}
       </div>
     ))
   } 
     return (
       <div className="window">
-        <h2> Queue </h2>
-        <hr></hr>
-        { queue } 
+        <div className="queueHeader">
+            <h2> Active Queue </h2>
+            <p> <em> at 'Restaurant-name' </em> </p>
+        </div>
+        <div className="queue">
+            { queue } 
+        </div>
       </div>
     );
   }

@@ -32,13 +32,14 @@ class MainPage extends Component {
         }
       
         onHandleSearch = () => {
-          fetch(`https://api.spotify.com/v1/search?query=${this.state.searchTrack}&type=track&market=SE&offset=0&limit=3`, {
+          fetch(`https://api.spotify.com/v1/search?query=${this.state.searchTrack}&type=track&market=SE&offset=0&limit=20`, {
             headers: {'Authorization': 'Bearer ' + this.state.accessToken}
           }).then(response => response.json())
           .then(data => this.setState({searchResult: data, gotData: true}))
         }
 
         addToQueue = (track) => {
+          console.log(track);
             this.props.addToQueue(track);
         }
       
@@ -59,7 +60,7 @@ class MainPage extends Component {
         } 
           return (
             <div className="window">
-                <div> 
+                <div className="search"> 
                   <input
                     type="text"
                     name="searchTrack"

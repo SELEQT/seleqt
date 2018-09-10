@@ -8,6 +8,10 @@ html {
   position: relative;
   display:flex;
   flex-direction: column;
+  background-color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  background-color: rgba(68, 68, 68, 1);
 }
 
 .center {
@@ -56,7 +60,7 @@ html {
 .header {
   height: 10vh;
   margin-top: 0px;
-  background-color: lightgray;
+  background-color: rgba(68, 68, 68, 1);
 }
 
 .logo {
@@ -70,7 +74,7 @@ html {
 }
 
 .footer {
-  background-color: lightgray;
+  background-color: rgba(68, 68, 68, 1);
   height: 30vh;
   flex: 1;
   display:flex;
@@ -92,42 +96,116 @@ html {
 /*  Queue Window */
 
 .window {
-  padding-top: 25px;
-  overflow: auto;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-left: 10px;
   height: 60vh;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(93, 93, 93, 1);
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid black */
+  overflow: hidden;
+  box-shadow: 0 1px 1px -1px gray;
+  /* background-image: linear-gradient(to bottom right, rgba(0, 195, 255, 0.589),rgba(143, 6, 255, 0.603)); */
 }
 
 .track {
   height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 3px;
+  padding-left: 0;
+  box-shadow: 0 1px 1px -1px gray;
+}
+
+.queue {
+  overflow: auto;
+}
+
+.queueHeader {
+  background-color: rgba(235, 235, 235, 0.445);
+  overflow: hidden;
+  min-height: 15%;
+  box-shadow: 0 1px 1px -1px gray;
+}
+
+.queueHeader h2 {
+  margin-top: 5px;
+  margin-bottom: 0;
+  background: linear-gradient(to bottom right, rgba(0, 195, 255, 0.589),rgba(143, 6, 255, 0.603));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  
+}
+
+.queueHeader p {
+  margin-top: 3px;
+  color: white;
+  font-weight: 100;
+}
+
+.info {
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 4px;
+  text-align: left;
+  flex-grow: 2;
+  font-size: 4vw;
+  /* border: 0.5px solid black; */
 }
 
 .songImage {
-  float: left;
-  margin-left: 25px;
+  height: 64px;
 }
 
-.artistName{
-  display: inline-block;
+.artistName {
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 49vw;
 }
 
-.songName{
-  display: inline-block;
+.track p {
+  margin-top: 0px;
+  margin-bottom: 0;
 }
 
+.songName {
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 49vw;
+}
+
+.albumName {
+
+}
+
+.length {
+
+}
 
 .upvote {
-  float: right;
-  margin-right: 10%;
-  margin-top: 25px;
 }
 
 .voteNumber {
-  float: right;
-  margin-right: 10%;
+  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.178);
+  margin-left: 5vw;
+  margin-right: 5vw;
+  width: 15vw;
+  font-weight: 700;
+  font-size: 25px;
+  text-align: center;
+  color: white;
+  /* text-shadow: 2px 2px black; */
+  background-image: linear-gradient(to bottom right, rgba(124, 248, 141, 0.589),rgba(252, 252, 252, 0.603));
 }
 
 /*  Search Window */
 
-
+.search {
+  overflow: auto;
+}
 
