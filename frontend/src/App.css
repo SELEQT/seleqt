@@ -1,33 +1,55 @@
 * {
   box-sizing: border-box;
+  
 }
 
-html {
-  border: 0.5vh solid lightgreen;
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: rgba(236, 236, 236, 1);
   height: 100vh;
-  position: relative;
   display:flex;
   flex-direction: column;
-}
-
-.center {
+  background-color: rgba(68, 68, 68, 1);
   text-align: center;
+  margin: 0;
+  padding: 0;
+  /* border: 0.5vh solid;
+  border-image: linear-gradient(to bottom, #fe8c00, #f83600);
+  border-image-slice: 1; */
+  
 }
 
-/* Login Page */
+h1 {
+  color: rgba(236, 236, 236, 1);
+  font-weight: 700;
+  font-size: 2em;
+  
+}
+
+h2 {
+  color:rgba(236, 236, 236, 1);
+  font-weight: 400;
+  font-size: 1em;
+  
+}
+
+/* LOGIN PAGE */
 
 .loginLogo {
   margin-top: 4rem;
   width: 80%;
+  
 }
 
 .loginHeader {
   margin-top: 5rem;
+  
 }
 
 .loginInputContainer {
   display: flex;
   justify-content: center;
+  
 }
 
 .loginInputField {
@@ -35,42 +57,172 @@ html {
   width: 25%;
   padding: 1rem;
   margin: 1rem;
+  
+}
+
+.frontPageBtn {
+  margin-top: 10rem;
+  
 }
 
 .btn {
-  margin-top: 10rem;
   padding: 1rem;
   min-width: 6rem; 
   background-color: lightgreen;
   border: none;
+  
 }
 
-/* Main Page */
+/* MAIN PAGE */
 
 .mainPage {
   display: flex;
   flex-direction: column;
-  height: 94vh;
+  height: 100vh;
+
 }
+
+/* Main Page header */
 
 .header {
   height: 10vh;
-  margin-top: 0px;
-  background-color: lightgray;
+  background-color: rgba(68, 68, 68, 1);
+  
 }
 
 .logo {
-  width: 140px;
+  width: 40%;
+  
 }
 
-.switch {
-  min-width: 6rem; 
-  background-color: lightgreen;
-  border: none;
+
+/* Center Window */
+
+.window {
+  border-radius: 5px;
+  margin-right: 2.2vw;
+  margin-left: 2.2vw;
+  height: 60vh;
+  background-color: rgba(93, 93, 93, 1);
+  box-shadow: 0 1px 1px -1px gray;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
 }
+
+/* Queue Window */
+
+.queueHeader {
+  background-color: rgb(107, 107, 107);
+  box-shadow: 0 2px 2px -2px rgba(40, 40, 40, 1);
+}
+
+.queue {
+  overflow: auto;
+}
+
+/* Queued Track */
+
+.track {
+  height: 100px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  box-shadow: 0 1px 1px -1px gray;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.songImage {
+  border-radius: 5px;
+  height: 64px;
+  margin-left: 2.5vw;
+
+}
+
+.info {
+  margin-left: 2.5vw;
+  margin-right: 2.5vw;
+  padding: px;
+  text-align: left;
+  flex-grow: 2;
+  font-size: 4vw;
+}
+
+
+.info p {
+  margin-top: 0;
+  margin-bottom: 0;
+  min-width: 49vw;
+  max-width: 49vw; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.songName {
+  font-size: 16px;
+  font-weight: 400;
+  font-style: none; 
+}
+
+
+.artistName {
+  font-size: 13px;
+  font-weight: 200; 
+  font-style: italic;
+
+}
+
+.albumName {
+  font-size: 13px;
+  font-weight: 200;
+  font-style: italic;
+
+}
+
+.length {
+  font-size: 11px;
+  font-weight: 200; 
+  
+}
+
+.voteNumber {
+  width: 15vw;
+  margin-right: 1vw;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: none; 
+  text-align: center;
+  color: rgba(236, 236, 236, 1);
+  
+}
+
+.upvote {
+  font-size: 40px;
+  color:  rgba(236, 236, 236, 1);
+  margin-right: 3vw;
+  
+}
+
+.upvote:active {
+  color:  rgba(239, 147, 0, 1);
+  margin-right: 3vw;
+  
+}
+
+/*  Search Window */
+
+.search {
+  overflow: auto;
+  
+}
+/* Main Page Footer*/
 
 .footer {
-  background-color: lightgray;
+  background-color: rgba(68, 68, 68, 1);
   height: 30vh;
   flex: 1;
   display:flex;
@@ -113,6 +265,30 @@ html {
   font-size: 0.75em;
 }
 
+/* Main Page Footer Buttons */
+
+.switch {
+  padding: 0.5em;
+  color: rgba(236, 236, 236, 1);
+  width: 25%;
+  border: none;
+  border-radius: 0.3em;
+  box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.2);
+  font-size: 1em;
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+  outline: none;
+  background: rgba(239, 147, 0, 1);; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #fe8c00, #f83600); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #fe8c00, #f83600); 
+}
+   
+.switch:active {
+  transform: translate(1px, 2px);
+}
+
+/* Main Page Footer Now Playing Window */
+
 .nowPlaying {
   width: 100%;
   height: 50%;
@@ -154,46 +330,68 @@ html {
   height: 50%;
 }
 
+/* Hamburger Menu */
 
-/*  Queue Window */
+#page-wrap {
+  text-align: center;
 
-.window {
-  padding-top: 25px;
+  /* Prevent sidebar from showing a scrollbar on page */
   overflow: auto;
-  height: 60vh;
-  background-color: rgba(0, 0, 0, 0.7);
+  
 }
 
-.track {
-  height: 100px;
-}
-
-.songImage {
-  float: left;
-  margin-left: 25px;
-}
-
-.artistName{
+/* Individual item */
+.bm-item {
   display: inline-block;
+
+  /* sidebar item styling */
+  text-decoration: none;
+  margin-bottom: 10px;
+  color: rgba(236, 236, 236, 1);
+  transition: color 0.2s;
+  
 }
 
-.songName{
-  display: inline-block;
+/* Change color on hover */
+.bm-item:hover {
+  color: rgba(239, 147, 0, 1);
+  
 }
 
 
-.upvote {
-  float: right;
-  margin-right: 10%;
-  margin-top: 25px;
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: relative;
+  width: 36px;
+  height: 30px;
+  left: 300px;
+  top: 36px; 
+  
 }
 
-.voteNumber {
-  float: right;
-  margin-right: 10%;
+/* Color / shape of burger icon bars */
+.bm-burger-bars {
+  background: rgba(93, 93, 93, 1);
+  
 }
 
-/*  Search Window */
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+  
+}
 
+/* Color / shape of close button cross */
+.bm-cross {
+  background: rgba(236, 236, 236, 1);
 
+}
 
+/* General sidebar styles */
+.bm-menu {
+  background: rgba(93, 93, 93, 1);
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+  
+}

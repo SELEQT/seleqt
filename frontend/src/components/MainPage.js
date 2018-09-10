@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import ReactDOM from "react-dom";
 import queryString from 'query-string';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
+import Menu from './Menu';
 import QueueWindow from './QueueWindow';
 import SearchWindow from './SearchWindow';
 import seleqt from '../images/seleqt.png';
+
 
 class MainPage extends Component {
 
@@ -16,14 +19,15 @@ class MainPage extends Component {
           playing: false,
           remainingTime: 0
         }
-      
+
         addToQueue = (track) => {
-          let songs = [...this.state.queuedTracks];
-          track.votes = 0;
-          songs.push(track);
-          this.setState({ queuedTracks: songs })
+            let songs = [...this.state.queuedTracks];
+            track.votes = 0;
+            songs.push(track);
+            console.log(track);
+            this.setState({ queuedTracks: songs })
         }
-      
+
         playPlaylist = () => {
 
             let parsed = queryString.parse(window.location.search);
@@ -110,8 +114,6 @@ class MainPage extends Component {
         middleware = () => {
             this.playPlaylist();
         }
-        
-        
 
         render() {
 
@@ -122,9 +124,11 @@ class MainPage extends Component {
         return (
             <div className="center mainPage">
                 <header className="header"> 
+                    <Menu />
                     <img className="logo" alt="sd" src={seleqt} />
+
                 </header>
-                
+
                 {!this.state.goToQueue ?
                 <SearchWindow addToQueue={this.addToQueue}/>
                 : 
@@ -168,5 +172,4 @@ class MainPage extends Component {
           );
         }
       }
-
 export default MainPage;
