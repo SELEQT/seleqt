@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import queryString from 'query-string';
+import querySearch from 'stringquery';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import QueueWindow from './QueueWindow';
 
@@ -16,7 +16,7 @@ class MainPage extends Component {
         }
       
         componentDidMount() {
-          let parsed = queryString.parse(window.location.search);
+          let parsed = querySearch(this.props.location.search);
           let accessToken = parsed.access_token;
           this.setState({accessToken: accessToken});
 
