@@ -175,7 +175,6 @@ class MainPage extends Component {
             return array;
         }
 
-
         render() {
         
         let restS = this.state.remainingTime % 60;
@@ -200,7 +199,7 @@ class MainPage extends Component {
                     <nav className="nav">
                         <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Search </button>
                         <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Queue </button>
-                        <button className="switch"onClick={this.playPlaylist}> Play </button>
+                        <button className="switch" onClick={this.triggerChildPlayplaylist}> Play </button>
                     </nav>
 
                     <Player queuedTracks={this.state.queuedTracks} />

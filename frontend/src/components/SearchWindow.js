@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import QueueWindow from './QueueWindow';
 import firebase from '../firebase';
+import missingAlbum from './missingAlbum.png';
 
 
 class MainPage extends Component {
@@ -57,7 +58,13 @@ class MainPage extends Component {
           const annonser = this.state.searchResult.tracks.items;
           listOfResult = annonser.map(annons => <div key={annons.id} className="track">
 
-              <img className="songImage" src={annons.album.images[2].url} />
+              <img className="songImage" src={
+                annons.album.images.length === 0
+                ? missingAlbum
+                : annons.album.images[2].url
+                } 
+                
+                />
               <div className="info">
                 <p className="songName">{annons.name}</p>
                 <p className="artistName">{annons.artists[0].name}</p>
