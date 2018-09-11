@@ -1,0 +1,19 @@
+{
+  "short_name": "SELEQT",
+  "name": "SELEQT - Your Music Eveywhere!",
+  "icons": [
+        {
+            "src": "/android-chrome-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "rgba(68, 68, 68, 1)",
+    "background_color": "rgba(68, 68, 68, 1)",
+    "start_url": "https://infinite-sands-69466.herokuapp.com",
+    "display": "standalone"
+}
+
+
+// https://guarded-citadel-40710.herokuapp.com/ - old live site?
+

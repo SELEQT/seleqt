@@ -9,7 +9,6 @@ import seleqt from '../images/seleqt.png';
 import firebase from '../firebase';
 import Player from './Player';
 
-
 class MainPage extends Component {
 
         state = {
@@ -186,11 +185,11 @@ class MainPage extends Component {
         console.log(this.state.queuedTracks);
         return (
             <div className="center mainPage">
-                <header className="header"> 
-                    <Menu />
+                <div className="header"> 
+                <div className="test"></div>
                     <img className="logo" alt="sd" src={seleqt} />
-
-                </header>
+                    <Menu />
+                </div>
 
                 {!this.state.goToQueue ?
                 <SearchWindow addToQueue={this.addToQueue}/>
@@ -199,9 +198,9 @@ class MainPage extends Component {
 
                 <footer className="footer">
                     <nav className="nav">
-                        <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Switch </button>
-                        <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Switch </button>
-                        <button onClick={this.playPlaylist}> Switch </button>
+                        <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Search </button>
+                        <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Queue </button>
+                        <button className="switch"onClick={this.playPlaylist}> Play </button>
                     </nav>
 
                     <Player queuedTracks={this.state.queuedTracks} />

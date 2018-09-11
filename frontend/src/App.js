@@ -4,6 +4,7 @@ import queryString from 'query-string';
 import MainPage from './components/MainPage';
 import Login from './components/Login';
 import SpotifyLogin from './components/SpotifyLogin';
+import './App.css'
 
 class App extends Component {
 
