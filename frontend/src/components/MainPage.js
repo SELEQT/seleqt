@@ -5,7 +5,8 @@ import { BrowserRouter, Route, Link } from 'react-router-dom';
 import Menu from './Menu';
 import QueueWindow from './QueueWindow';
 import SearchWindow from './SearchWindow';
-import seleqt from '../images/seleqt.png';
+import seleqt from "../images/seleqt.png";
+
 
 
 class MainPage extends Component {
@@ -123,11 +124,11 @@ class MainPage extends Component {
 
         return (
             <div className="center mainPage">
-                <header className="header"> 
-                    <Menu />
+                <div className="header"> 
+                <div className="test"></div>
                     <img className="logo" alt="sd" src={seleqt} />
-
-                </header>
+                    <Menu />
+                </div>
 
                 {!this.state.goToQueue ?
                 <SearchWindow addToQueue={this.addToQueue}/>
@@ -136,9 +137,9 @@ class MainPage extends Component {
 
                 <footer className="footer">
                     <nav className="nav">
-                        <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Switch </button>
-                        <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Switch </button>
-                        <button onClick={this.playPlaylist}> Switch </button>
+                        <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Search </button>
+                        <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Queue </button>
+                        <button className="switch"onClick={this.playPlaylist}> Play </button>
                     </nav>
                     
                     <div className="nowPlaying">

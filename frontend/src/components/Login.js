@@ -6,27 +6,27 @@ function Login() {
     return (
         <div className="center">
             <img className="loginLogo" alt="sd" src={seleqt} />
-            <h3 className="loginHeader">ENTER CODE</h3>
+            <h2 className="loginHeader">ENTER CODE</h2>
             <div className="loginInputContainer">
                 <input
                     className="loginInputField"
                     type="number"
-                    placeholder="number"
+                    placeholder="#"
                 />
                 <input
                     className="loginInputField"
                     type="number"
-                    placeholder="number"
+                    placeholder="#"
                 />
                 <input
                     className="loginInputField"
                     type="number"
-                    placeholder="number"
+                    placeholder="#"
                 />
                 <input
                     className="loginInputField"
                     type="number"
-                    placeholder="number"
+                    placeholder="#"
                 />
             </div>
 
