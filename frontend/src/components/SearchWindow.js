@@ -40,37 +40,48 @@ class MainPage extends Component {
           console.log(track);
           this.props.addToQueue(track);
         }
-      
+
+      convertToMinSeC = (ms) => {
+        let s = ms / 1000;
+        let restS = s % 60;
+        let wholeMinS = s - restS;
+        let min = wholeMinS / 60;
+
+        return min + "m " + Math.round(restS) + "s";
+      }
+
         render() {
          let listOfResult;
           if (this.state.gotData) {
           const annonser = this.state.searchResult.tracks.items;
-          listOfResult = annonser.map(annons => (
-            <div key={annons.id}>
-            <p><strong>{annons.name}</strong></p>
-              <p><em>{annons.artists[0].name}</em></p>
-       
-              <img src={annons.album.images[2].url} />
-              <br/>
-              <button onClick={ () =>  this.addToQueue(annons)}> Add to queue </button>
-              <hr></hr>
-            </div>
-          ))
-        } 
+          listOfResult = annonser.map(annons => <div key={annons.id} className="track">
+
+              <img className="songImage" src={annons.album.images[2].url} />
+              <div className="info">
+                <p className="songName">{annons.name}</p>
+                <p className="artistName">{annons.artists[0].name}</p>
+                <p className="albumName">{annons.album.name}</p>
+                <p className="length"> {this.convertToMinSeC(annons.duration_ms)} </p>
+
+              </div>
+
+
+              <br />
+              <button className="addToQueue" onClick={() => this.addToQueue(annons)}>Queue</button>
+            </div>);
+        }
           return (
-            <div className="window">
-                <div className="search"> 
-                  <input
-                    type="text"
-                    name="searchTrack"
-                    value={this.state.searchTrack}
-                    onChange={this.onHandleSearchInput}
-                  />
-                  {/* <button onClick={this.onHandleSearch}> Search </button> */}
-                  <h2>Search Result</h2>
-                  { listOfResult }
-                </div>
+          <div className="window">
+            <div className="searchHeader">
+              <div className="searchHeaderText">
+                <h1> Search </h1>
+                <input type="text" name="searchTrack" className="searchBox" placeholder="Search for Spotify tracks here.."value={this.state.searchTrack} onChange={this.onHandleSearchInput} />
+              </div>
             </div>
+            <div className="search">
+                {listOfResult}
+            </div>
+          </div>
           );
         }
       }

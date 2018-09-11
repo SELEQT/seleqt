@@ -54,18 +54,19 @@ class QueueWindow extends Component {
         <p className="voteNumber"> {annons.votes} </p>
 
         <i className="far fa-arrow-alt-circle-up upvote" onClick={ () =>  this.upvote(annons)}> </i>
-        {/* <button onClick={ () =>  this.removeFromQueue(annons)}> Remove from queue </button>  */}
       </div>
     ))
   } 
     return (
-      <div className="window">
+    <div className="window">
         <div className="queueHeader">
+          <div className="queueHeaderText">
             <h1> Active Queue </h1>
             <h2> at 'Restaurant-name' </h2>
+          </div>
         </div>
         <div className="queue">
-            { queue } 
+          {queue}
         </div>
       </div>
     );
