@@ -178,7 +178,7 @@ class MainPage extends Component {
 
 
         render() {
-
+        
         let restS = this.state.remainingTime % 60;
         let wholeMinS = this.state.remainingTime - restS;
         let min = wholeMinS / 60;

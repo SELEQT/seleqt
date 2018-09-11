@@ -14,13 +14,6 @@ class Player extends Component {
         myCurrentPoints: 0
     }
 
-   /*  componentDidMount(){
-        setTimeout(() => {
-            this.setState({ playing: true })
-            this.displayTimer()
-        }, 1000)
-    }
- */
     playPlaylist = () => {
 
         let parsed = queryString.parse(window.location.search);
@@ -110,7 +103,6 @@ class Player extends Component {
             let timer = snapshot.val();
             this.setState({ remainingTime: timer });
         })
-        this.setState({ })
 
     }
 
