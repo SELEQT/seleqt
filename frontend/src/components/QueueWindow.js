@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
-
+import firebase from '../firebase';
 
 class QueueWindow extends Component {
 
@@ -13,7 +13,29 @@ class QueueWindow extends Component {
       for (let song of this.props.queuedTracks){
         songs.push(song);
       }
-    this.setState({ tracks: songs })
+    // this.setState({ tracks: songs })
+
+    firebase.database().ref(`/queue`).once('value', (snapshot) => {
+      let queue = this.toArray(snapshot.val());
+      let sorted = this.orderOnMount(queue);
+      this.setState({ tracks: sorted })
+    })
+  }
+
+  toArray = (firebaseObject) => {
+    let array = []
+    for (let item in firebaseObject) {
+      array.push({ ...firebaseObject[item], key: item })
+    }
+    return array;
+  }
+  
+  orderOnMount = (queue) => {
+    let orderedTracks = queue;
+    orderedTracks.sort(function(a, b){
+        return b.votes - a.votes
+    });
+    return orderedTracks;
   }
 
   order = () => {
@@ -26,7 +48,9 @@ class QueueWindow extends Component {
 
   upvote = (track) => {
     track.votes++;
+
     this.order();
+    firebase.database().ref(`/queue/${track.key}`).set(track);
   }
 
   convertToMinSeC = (ms) => {

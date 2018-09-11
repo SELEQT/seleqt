@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import queryString from 'query-string';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import QueueWindow from './QueueWindow';
+import firebase from '../firebase';
 
 
 class MainPage extends Component {
