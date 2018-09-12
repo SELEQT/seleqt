@@ -20,7 +20,8 @@ class MainPage extends Component {
           playing: false,
           remainingTime: 0,
           userId: {},
-          myCurrentPoints: 0
+          myCurrentPoints: 0,
+          removeTopTrackFromQueue: false
         }
         
         componentDidMount() {
@@ -41,8 +42,16 @@ class MainPage extends Component {
             firebase.database().ref(`/queue`).on('value', (snapshot) => {
                 let tracks = this.toArray(snapshot.val());
                 this.setState({ queuedTracks: tracks});
+                this.order();
             })
+        }
 
+        order = () => {
+            let orderedTracks = [...this.state.queuedTracks];
+            orderedTracks.sort(function(a, b){
+                return b.votes - a.votes
+            });
+            this.setState({ queuedTracks : orderedTracks });
         }
 
         checkUser = (users) => {
@@ -79,101 +88,16 @@ class MainPage extends Component {
         
         }
 
-        playPlaylist = () => {
-
-            let parsed = queryString.parse(window.location.search);
-            let accessToken = parsed.access_token;
-            this.setState({
-                accessToken: accessToken,
-                popped : false,
-                playing: true
-            
-            });
-            let duration = this.state.queuedTracks[0].duration_ms;
-            let startTime;
-            let difference = 0;
-            let ticker = 0;
-            let secondsOfSong = 0;
-            let updateTime = duration/1000;
-            let tickerWidth = 10/updateTime;
-
-            
-            console.log(updateTime)
-            
-            /* Set variables for now playing progress bar */ 
-            const progressBar = document.querySelector('.myBar');
-            let width = 0;
-
-            let nowPlaying = {
-                width: 0,
-                time: 0
-            }
-
-            // firebase.database().ref(`/nowPlaying/playingSong`).set(nowPlaying);
-
-
-            
-            
-
-            console.log(this.state.queuedTracks);
-            fetch(`https://api.spotify.com/v1/me/player/play?device_id=${this.state.devices}`, {
-                method: 'PUT',
-                body: JSON.stringify({
-                    "uris": [`${this.state.queuedTracks[0].uri}`],
-                    "position_ms": 0
-                }),
-                headers: { 'Authorization': 'Bearer ' + accessToken } 
-            })
-            .then( startTime = Date.now() )
-            const interval = setInterval(() =>{
-                difference = Date.now() - startTime;
-                if (difference >= duration && !this.state.popped){
-                    let songs = [...this.state.queuedTracks];
-                    songs.shift();
-
-                    firebase.database().ref(`/queue/${this.state.queuedTracks[0].key}`).remove();
-
-                    this.setState({ queuedTracks: songs })
-                    this.setState({ popped : true });    
-
-                };
-                if (this.state.popped) {
-                    this.middleware();
-                    clearInterval(interval)
-                    
-                }
-              
-                // Clock
-                if (ticker % 10 == 0) {
-
-                    secondsOfSong ++;
-                    let durationSeconds = duration / 1000;
-                    let seconds = Math.round(durationSeconds - secondsOfSong); 
-                    
-                    firebase.database().ref(`/nowPlaying/timer`).set(seconds);
-
-                    // this.setState({remainingTime: seconds});
-                }
-
-                width += tickerWidth;
-                // progressBar.style.width = width + '%';
-
-                firebase.database().ref(`/nowPlaying/musicbar`).set(width);
-
-                ticker++;
-            }, 100)
-        }
-
-        middleware = () => {
-            this.playPlaylist();
-        }
-
         toArray = (firebaseObject) => {
             let array = []
             for (let item in firebaseObject) {
               array.push({ ...firebaseObject[item], key: item })
             }
             return array;
+        }
+
+        setVotes = (orderedTracks) => {
+            this.setState({ queuedTracks: orderedTracks });
         }
 
         render() {
@@ -194,7 +118,7 @@ class MainPage extends Component {
                 {!this.state.goToQueue ?
                 <SearchWindow addToQueue={this.addToQueue}/>
                 : 
-                <QueueWindow queuedTracks={this.state.queuedTracks} />}
+                <QueueWindow queuedTracks={this.state.queuedTracks} setVotes={this.setVotes}/>}
 
                 <footer className="footer">
                     <nav className="nav">
@@ -203,7 +127,7 @@ class MainPage extends Component {
                         {/* <button className="switch" onClick={this.triggerChildPlayplaylist}> Play </button> */}
                     </nav>
 
-                    <Player queuedTracks={this.state.queuedTracks} />
+                    <Player queuedTracks={this.state.queuedTracks}/>
                     
                 </footer>
             </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
 import firebase from '../firebase';
-
+import missingAlbum from '../images/seleqt_icon_gradient.png';
 class QueueWindow extends Component {
 
   state = {
@@ -15,7 +15,7 @@ class QueueWindow extends Component {
       }
     // this.setState({ tracks: songs })
 
-    firebase.database().ref(`/queue`).once('value', (snapshot) => {
+    firebase.database().ref(`/queue`).on('value', (snapshot) => {
       let queue = this.toArray(snapshot.val());
       let sorted = this.orderOnMount(queue);
       this.setState({ tracks: sorted })
@@ -48,8 +48,9 @@ class QueueWindow extends Component {
 
   upvote = (track) => {
     track.votes++;
-
     this.order();
+    this.props.setVotes(this.state.queuedTracks);
+
     firebase.database().ref(`/queue/${track.key}`).set(track);
   }
 
@@ -67,18 +68,26 @@ class QueueWindow extends Component {
     if (this.state.tracks) {
     const annonser = [...this.state.tracks];
     queue = annonser.map(annons => (
-      <div key={annons.id} className="track">
-        <img className="songImage" src={annons.album.images[2].url} />
-        <div className="info">
-            <p className="songName">{annons.name}</p>
-            <p className="artistName">{annons.artists[0].name} -</p>
-            <p className="albumName">{annons.album.name}</p>
-            <p className="length"> {this.convertToMinSeC(annons.duration_ms)} </p>
-        </div>
-        <p className="voteNumber"> {annons.votes} </p>
+      <React.Fragment>
+        { annons.votes !== 100000 &&
+        <div key={annons.id} className="track">
+          <img className="songImage" src={
+          !annons.album.images
+          ? missingAlbum
+          : annons.album.images[2].url
+          }/>
+          <div className="info">
+              <p className="songName">{annons.name}</p>
+              <p className="artistName">{annons.artists[0].name} -</p>
+              <p className="albumName">{annons.album.name}</p>
+              <p className="length"> {this.convertToMinSeC(annons.duration_ms)} </p>
+          </div>
+          <p className="voteNumber"> {annons.votes} </p>
 
-        <i className="far fa-arrow-alt-circle-up upvote" onClick={ () =>  this.upvote(annons)}> </i>
-      </div>
+          <i className="far fa-arrow-alt-circle-up upvote" onClick={ () =>  this.upvote(annons)}> </i>
+        </div>
+        }
+      </React.Fragment>
     ))
   } 
     return (

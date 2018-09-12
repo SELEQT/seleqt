@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from '../firebase';
 import queryString from 'query-string';
+import missingAlbum from '../images/seleqt_icon_gradient.png';
 
 class Player extends Component {
 
@@ -12,7 +13,8 @@ class Player extends Component {
         playing: false,
         remainingTime: 0,
         userId: {},
-        myCurrentPoints: 0
+        myCurrentPoints: 0,
+        canPlay: false
     }
 
     componentDidMount() {
@@ -20,92 +22,114 @@ class Player extends Component {
     }
 
     playPlaylist = () => {
+        if (!this.props.queuedTracks.length == 0){
+            this.setState({ canPlay: true });
+            let parsed = queryString.parse(window.location.search);
+            let accessToken = parsed.access_token;
+            this.setState({
+                accessToken: accessToken,
+                popped : false,
+                playing: true
+            });
+            this.setVotesHigh(this.props.queuedTracks[0]);
+            let duration = this.props.queuedTracks[0].duration_ms;
+            let startTime;
+            let timePlayed = 0;
+            let ticker = 0;
+            let secondsOfSong = 0;
+            let updateTime = duration/1000;
+            let tickerWidth = 10/updateTime;
 
-        
-        let parsed = queryString.parse(window.location.search);
-        let accessToken = parsed.access_token;
-        this.setState({
-            accessToken: accessToken,
-            popped : false,
-            playing: true
-        
-        });
-        let duration = this.props.queuedTracks[0].duration_ms;
-        let startTime;
-        let difference = 0;
-        let ticker = 0;
-        let secondsOfSong = 0;
-        let updateTime = duration/1000;
-        let tickerWidth = 10/updateTime;
+            let width = 0;
 
-        let width = 0;
+            
+            // console.log(updateTime)
 
-        
-        console.log(updateTime)
+            // console.log(this.props.queuedTracks);
+            fetch(`https://api.spotify.com/v1/me/player/play?device_id=${this.state.devices}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    "uris": [`${this.props.queuedTracks[0].uri}`],
+                    "position_ms": 0
+                }),
+                headers: { 'Authorization': 'Bearer ' + accessToken } 
+            })
+            .then( startTime = Date.now() )
+            const interval = setInterval(() =>{
+                timePlayed = Date.now() - startTime;
+                if (timePlayed >= duration && !this.state.popped){
+                    let songs = [...this.props.queuedTracks];
+                    songs.shift();
+                    firebase.database().ref(`/queue/${this.props.queuedTracks[0].key}`).remove();
+                    this.setState({ queuedTracks: songs })
+                    this.setState({ popped : true });    
+                };
+                if (this.state.popped) {
+                    this.middleware();
+                    clearInterval(interval)
+                } else {
+                    
+                    width += tickerWidth;
+                    // progressBar.style.width = width + '%';
+                    // console.log(width)
+                    firebase.database().ref(`/nowPlaying/musicbar`).set(width);
 
-        console.log(this.props.queuedTracks);
-        fetch(`https://api.spotify.com/v1/me/player/play?device_id=${this.state.devices}`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                "uris": [`${this.props.queuedTracks[0].uri}`],
-                "position_ms": 0
-            }),
-            headers: { 'Authorization': 'Bearer ' + accessToken } 
-        })
-        .then( startTime = Date.now() )
-        const interval = setInterval(() =>{
-            difference = Date.now() - startTime;
-            if (difference >= duration && !this.state.popped){
-                let songs = [...this.props.queuedTracks];
-                songs.shift();
+                }
+            
+                // Clock
+                if (ticker % 10 == 0) {
 
-                firebase.database().ref(`/queue/${this.props.queuedTracks[0].key}`).remove();
+                    secondsOfSong ++;
+                    let durationSeconds = duration / 1000;
+                    let seconds = Math.round(durationSeconds - secondsOfSong); 
+                    
+                    firebase.database().ref(`/nowPlaying/timer`).set(seconds);
+                }
 
-                this.setState({ queuedTracks: songs })
-                this.setState({ popped : true });    
-
-            };
-            if (this.state.popped) {
-                this.middleware();
-                clearInterval(interval)
-                
-            }
-        
-            // Clock
-            if (ticker % 10 == 0) {
-
-                secondsOfSong ++;
-                let durationSeconds = duration / 1000;
-                let seconds = Math.round(durationSeconds - secondsOfSong); 
-                
-                firebase.database().ref(`/nowPlaying/timer`).set(seconds);
-            }
-
-            width += tickerWidth;
-            // progressBar.style.width = width + '%';
-            // console.log(width)
-            firebase.database().ref(`/nowPlaying/musicbar`).set(width);
-            console.log(width)
-
-            ticker++;
-        }, 100)
-        
-    }
-
-    middleware = () => {
-        if (this.state.queuedTracks.length !== 0) {
-            this.playPlaylist();
+                ticker++;
+            }, 100)
+        } else {
+            firebase.database().ref(`/nowPlaying/musicbar`).set(0);
+            firebase.database().ref(`/nowPlaying/timer`).set(0);
+            console.log("ADASDADAS")
         }
     }
 
-    displayTimer = () => {
+    order = () => {
+        let orderedTracks = [...this.state.queuedTracks];
+        orderedTracks.sort(function(a, b){
+            return b.votes - a.votes
+        });
+        this.setState({ queuedTracks : orderedTracks });
+    }
 
+    middleware = () => {
+            this.playPlaylist();
+    }
+
+    setVotesHigh = (track) => {
+        track.votes = 100000;
+        // this.props.setVotesHigh(track);
+
+        firebase.database().ref(`/queue/${track.key}`).set(track);
+    
+    }
+     
+    toArray = (firebaseObject) => {
+        let array = []
+        for (let item in firebaseObject) {
+          array.push({ ...firebaseObject[item], key: item })
+        }
+        return array;
+    }
+
+    displayTimer = () => {
         /* Set variables for now playing progress bar */ 
-        const progressBar = document.querySelector('.myBar');
+        // const progressBar = document.querySelector('.myBar');
 
         firebase.database().ref(`/nowPlaying/musicbar`).on('value', (snapshot) => {
             let width = snapshot.val();
-            progressBar.style.width = width + '%';
+            // progressBar.style.width = width + '%';
         })
 
         firebase.database().ref(`/nowPlaying/timer`).on('value', (snapshot) => {
@@ -120,36 +144,42 @@ class Player extends Component {
         let wholeMinS = this.state.remainingTime - restS;
         let min = wholeMinS / 60;
 
-        console.log(this.props.queuedTracks[0]);
-
         return (
-            <div className="nowPlaying">
-            <button className="testbutton" onClick={this.playPlaylist}> Play </button>
-                <div className="nowPlayingFlexContainer">
-                    <div className="nowPlayingFlexItem">
-                    { this.props.queuedTracks[0] &&
-                        <a href={this.props.queuedTracks[0].uri}><img className="nowPlayingImage" alt="Track image" src={this.props.queuedTracks[0].album.images[2].url} /></a>  
-                    }
-                    </div>
-                    <div className="nowPlayingFlexItem"> 
-                        <div>
+            <React.Fragment>
+                <button className="testbutton" onClick={this.playPlaylist}> Play </button>
+            {this.state.canPlay &&
+                <div className="nowPlaying">
+                    <div className="nowPlayingFlexContainer">
+                        <div className="nowPlayingFlexItem">
                         { this.props.queuedTracks[0] &&
-                            <p className="nowPlayingText master">Now playing: {this.props.queuedTracks[0].name} by {this.props.queuedTracks[0].artists[0].name}</p>
+                            <img className="nowPlayingImage" alt="Track image" src={
+                                !this.props.queuedTracks[0].album.images
+                                ? missingAlbum
+                                : this.props.queuedTracks[0].album.images[2].url
+                                } />
                         }
                         </div>
-                        <div className="myProgress">
-                            { this.props.queuedTracks[0] && 
+                        <div className="nowPlayingFlexItem"> 
                             <div>
-                                <div className="emptyMyBar"></div>
-                                <p className="remainingTime">{min} m {Math.round(restS)} s</p>
-                            </div>
+                            { this.props.queuedTracks[0] &&
+                                <p className="nowPlayingText master">Now playing: {this.props.queuedTracks[0].name} by {this.props.queuedTracks[0].artists[0].name}</p>
                             }
-                            <div className="myBar"></div>
-                            
+                            </div>
+                            <div className="myProgress">
+                                { this.props.queuedTracks[0] && 
+                                <div>
+                                    <div className="emptyMyBar"></div>
+                                    <p className="remainingTime">{min} m {Math.round(restS)} s</p>
+                                </div>
+                                }
+                                <div className="myBar"></div>
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
+            </React.Fragment>
         )
     }            
 }
