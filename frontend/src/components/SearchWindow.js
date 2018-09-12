@@ -14,15 +14,15 @@ class MainPage extends Component {
           gotData: false,
           goToQueue: false
         }
-      
+
         componentDidMount() {
           let parsed = queryString.parse(window.location.search);
           let accessToken = parsed.access_token;
           this.setState({accessToken: accessToken});
 
         }
-        
-      
+
+
         onHandleSearchInput = (event) => {
           this.setState({ [event.target.name]: event.target.value })
           if (event.target.value) {

@@ -37,7 +37,7 @@ class MainPage extends Component {
                 accessToken: accessToken,
                 popped : false,
                 playing: true
-            
+
             });
             let duration = this.state.queuedTracks[0].duration_ms;
             let startTime;
@@ -49,7 +49,7 @@ class MainPage extends Component {
 
             console.log(updateTime)
 
-            /* Set variables for now playing progress bar */ 
+            /* Set variables for now playing progress bar */
             const progressBar = document.querySelector('.myBar');
             let width = 0;
 
@@ -60,7 +60,7 @@ class MainPage extends Component {
                     "uris": [`${this.state.queuedTracks[0].uri}`],
                     "position_ms": 0
                 }),
-                headers: { 'Authorization': 'Bearer ' + accessToken } 
+                headers: { 'Authorization': 'Bearer ' + accessToken }
             })
             .then( startTime = Date.now() )
             const s = setInterval(() =>{
@@ -69,29 +69,29 @@ class MainPage extends Component {
                     let songs = [...this.state.queuedTracks];
                     songs.shift();
                     this.setState({ queuedTracks: songs })
-                    this.setState({ popped : true });    
+                    this.setState({ popped : true });
                 };
                 if (this.state.popped) {
                     this.middleware();
                     clearInterval(s)
-                    
+
                 }
-              
+
                 // Clock
                 if (ticker % 10 == 0) {
 
                     secondsOfSong ++;
                     let durationSeconds = duration / 1000;
-                    let seconds = Math.round(durationSeconds - secondsOfSong); 
-                    
+                    let seconds = Math.round(durationSeconds - secondsOfSong);
+
                     this.setState({remainingTime: seconds});
-                    
-                    
-                    
+
+
+
                     // this.setState({remainingTime : <p>${min} m ${Math.round(restS)} s</p>});
                     // progressBar.insertHTML=`<p>${min} m ${Math.round(restS)} s</p>`;
                 }
-                
+
                 width += tickerWidth;
                 progressBar.style.width = width + '%';
 
@@ -102,7 +102,7 @@ class MainPage extends Component {
                 } */
 
                 ticker++;
-                
+
                 /* console.log(duration)
                 console.log(updateTime)
                 width += updateTime;
@@ -132,7 +132,7 @@ class MainPage extends Component {
 
                 {!this.state.goToQueue ?
                 <SearchWindow addToQueue={this.addToQueue}/>
-                : 
+                :
                 <QueueWindow queuedTracks={this.state.queuedTracks} />}
 
                 <footer className="footer">
@@ -141,9 +141,9 @@ class MainPage extends Component {
                         <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Queue </button>
                         <button className="switch"onClick={this.playPlaylist}> Play </button>
                     </nav>
-                    
+
                     <div className="nowPlaying">
-                        
+
                         <div className="nowPlayingFlexContainer">
                             <div className="nowPlayingFlexItem">
                             { this.state.playing &&
