@@ -8,7 +8,7 @@ class Player extends Component {
         queuedTracks: [],
         popped: false,
         currentLoop: "",
-        devices: "add2238910e276e27e693896d661b1257859c046",
+        devices: "5326eff26026e253173bf71d0aa50e2492b49c2a",
         playing: false,
         remainingTime: 0,
         userId: {},
@@ -124,7 +124,7 @@ class Player extends Component {
 
         return (
             <div className="nowPlaying">
-            <button className="switch" onClick={this.playPlaylist}> Play </button>
+            <button className="testbutton" onClick={this.playPlaylist}> Play </button>
                 <div className="nowPlayingFlexContainer">
                     <div className="nowPlayingFlexItem">
                     { this.props.queuedTracks[0] &&

@@ -3,7 +3,7 @@ import queryString from 'query-string';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import QueueWindow from './QueueWindow';
 import firebase from '../firebase';
-import missingAlbum from './missingAlbum.png';
+import missingAlbum from '../images/missingAlbum.png';
 
 
 class MainPage extends Component {
