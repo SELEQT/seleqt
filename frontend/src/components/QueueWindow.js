@@ -49,7 +49,7 @@ class QueueWindow extends Component {
   upvote = (track) => {
     track.votes++;
     this.order();
-    this.props.setVotes(this.state.queuedTracks);
+    // this.props.setVotes(this.state.queuedTracks);
 
     firebase.database().ref(`/queue/${track.key}`).set(track);
   }
