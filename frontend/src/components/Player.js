@@ -5,17 +5,23 @@ import queryString from 'query-string';
 class Player extends Component {
 
     state = {
+        queuedTracks: [],
         popped: false,
         currentLoop: "",
-        devices: "add2238910e276e27e693896d661b1257859c046",
+        devices: "5326eff26026e253173bf71d0aa50e2492b49c2a",
         playing: false,
         remainingTime: 0,
         userId: {},
         myCurrentPoints: 0
     }
 
+    componentDidMount() {
+        this.displayTimer()
+    }
+
     playPlaylist = () => {
 
+        
         let parsed = queryString.parse(window.location.search);
         let accessToken = parsed.access_token;
         this.setState({
@@ -64,7 +70,7 @@ class Player extends Component {
                 clearInterval(interval)
                 
             }
-          
+        
             // Clock
             if (ticker % 10 == 0) {
 
@@ -83,10 +89,13 @@ class Player extends Component {
 
             ticker++;
         }, 100)
+        
     }
 
     middleware = () => {
-        this.playPlaylist();
+        if (this.state.queuedTracks.length !== 0) {
+            this.playPlaylist();
+        }
     }
 
     displayTimer = () => {
@@ -103,9 +112,7 @@ class Player extends Component {
             let timer = snapshot.val();
             this.setState({ remainingTime: timer });
         })
-
     }
-
 
     render() {
 
@@ -117,29 +124,28 @@ class Player extends Component {
 
         return (
             <div className="nowPlaying">
-                <button onClick={this.playPlaylist}> Switch </button>
-                <button onClick={this.displayTimer}>GE</button>
-                        
+            <button className="testbutton" onClick={this.playPlaylist}> Play </button>
                 <div className="nowPlayingFlexContainer">
                     <div className="nowPlayingFlexItem">
-                    { this.state.playing &&
+                    { this.props.queuedTracks[0] &&
                         <a href={this.props.queuedTracks[0].uri}><img className="nowPlayingImage" alt="Track image" src={this.props.queuedTracks[0].album.images[2].url} /></a>  
                     }
                     </div>
                     <div className="nowPlayingFlexItem"> 
                         <div>
-                        { this.state.playing &&
-                            <p className="nowPlayingText">Now playing: {this.props.queuedTracks[0].name} by {this.props.queuedTracks[0].artists[0].name}</p>
+                        { this.props.queuedTracks[0] &&
+                            <p className="nowPlayingText master">Now playing: {this.props.queuedTracks[0].name} by {this.props.queuedTracks[0].artists[0].name}</p>
                         }
                         </div>
                         <div className="myProgress">
-                            { this.state.playing && 
+                            { this.props.queuedTracks[0] && 
                             <div>
                                 <div className="emptyMyBar"></div>
                                 <p className="remainingTime">{min} m {Math.round(restS)} s</p>
                             </div>
                             }
                             <div className="myBar"></div>
+                            
                         </div>
                     </div>
                 </div>

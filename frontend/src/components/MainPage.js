@@ -16,7 +16,7 @@ class MainPage extends Component {
           goToQueue: false,
           popped: false,
           currentLoop: "",
-          devices: "add2238910e276e27e693896d661b1257859c046",
+          devices: "5326eff26026e253173bf71d0aa50e2492b49c2a",
           playing: false,
           remainingTime: 0,
           userId: {},
@@ -30,7 +30,8 @@ class MainPage extends Component {
 
             fetch('https://api.spotify.com/v1/me', {
                 headers: {'Authorization': 'Bearer ' + accessToken}
-            }).then(response => response.json())
+            })
+            .then(response => response.json())
             .then(data => this.setState({ userId: data }))
             .then(firebase.database().ref(`/users`).once('value', (snapshot) => {
                 let users = this.toArray(snapshot.val());
@@ -175,7 +176,6 @@ class MainPage extends Component {
             return array;
         }
 
-
         render() {
         
         let restS = this.state.remainingTime % 60;
@@ -200,7 +200,7 @@ class MainPage extends Component {
                     <nav className="nav">
                         <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Search </button>
                         <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Queue </button>
-                        <button className="switch"onClick={this.playPlaylist}> Play </button>
+                        {/* <button className="switch" onClick={this.triggerChildPlayplaylist}> Play </button> */}
                     </nav>
 
                     <Player queuedTracks={this.state.queuedTracks} />
