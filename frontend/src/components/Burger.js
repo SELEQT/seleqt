@@ -10,6 +10,7 @@ class Burger extends React.Component{
   }
 
   render(){
+    console.log(this.props.userId.email);
   return (
     <div className="menuFlex">
 
@@ -36,13 +37,18 @@ class Burger extends React.Component{
             Enter new SELEQT code
           </a>
 
-          <p className="menu-item" href="#" onClick={() => this.play()}>
-            Initiate
-          </p>
+          { (this.props.userId.email == "theresesarlin@gmail.com" || this.props.userId.email == "marcus.mh93@gmail.com" || this.props.userId.email == "anton.bq@gmail.com") ?
+            <React.Fragment>
+              <p className="menu-item" href="#" onClick={() => this.play()}>
+                Initiate
+              </p>
 
-          <p className="menu-item" href="#" onClick={() => this.props.shutDown()}>
-            Shut down
-          </p>
+              <p className="menu-item" href="#" onClick={() => this.props.shutDown()}>
+                Shut down
+              </p>
+            </React.Fragment> 
+            : <div></div>
+          }
 
         </Menu>
       </div>

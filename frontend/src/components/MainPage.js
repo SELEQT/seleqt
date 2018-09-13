@@ -253,7 +253,7 @@ class MainPage extends Component {
                 <div className="points"> {this.state.myCurrentPoints} </div>
             </div>
                 <img className="logo" alt="sd" src={seleqt} />
-                <Burger shutDown={this.shutDown} playPlayList={this.playPlaylist} playing={this.state.playing}/>
+                <Burger shutDown={this.shutDown} playPlayList={this.playPlaylist} playing={this.state.playing} userId={this.state.userId}/>
             </div>
 
             {!this.state.goToQueue ?
