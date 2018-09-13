@@ -198,13 +198,16 @@ class MainPage extends Component {
 
                 <footer className="footer">
                     <nav className="nav">
-                        <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Search </button>
-                        <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Queue </button>
-                        {/* <button className="switch" onClick={this.triggerChildPlayplaylist}> Play </button> */}
+                        <div className="slider">
+                            <div className="sliderWindow">
+                                <button className="switch" onClick={() => this.setState({ goToQueue: false })}> Search </button>
+                                <button className="switch" onClick={() => this.setState({ goToQueue: true })}> Queue </button>
+                            </div>
+                        </div>
                     </nav>
 
-                    <Player queuedTracks={this.state.queuedTracks} />
-                    
+                    <Player className="player" queuedTracks={this.state.queuedTracks} />
+
                 </footer>
             </div>
           );

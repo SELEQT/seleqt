@@ -131,27 +131,27 @@ class Player extends Component {
                         <a href={this.props.queuedTracks[0].uri}><img className="nowPlayingImage" alt="Track image" src={this.props.queuedTracks[0].album.images[2].url} /></a>  
                     }
                     </div>
-                    <div className="nowPlayingFlexItem"> 
+                    <div className="nowPlayingFlexItem">
                         <div>
                         { this.props.queuedTracks[0] &&
                             <p className="nowPlayingText master">Now playing: {this.props.queuedTracks[0].name} by {this.props.queuedTracks[0].artists[0].name}</p>
                         }
                         </div>
                         <div className="myProgress">
-                            { this.props.queuedTracks[0] && 
+                            { this.props.queuedTracks[0] &&
                             <div>
                                 <div className="emptyMyBar"></div>
                                 <p className="remainingTime">{min} m {Math.round(restS)} s</p>
                             </div>
                             }
                             <div className="myBar"></div>
-                            
+
                         </div>
                     </div>
                 </div>
             </div>
         )
-    }            
+    }
 }
 
 export default Player;
