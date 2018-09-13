@@ -53,7 +53,7 @@ class QueueWindow extends Component {
       mySong = true;
     }
 
-    if (!this.props.myCurrentPoints <= 0 && !mySong ) {
+    if (this.props.myCurrentPoints >= 10 && !mySong ) {
       track.votes++;
       this.order();
       this.props.reducePoints();
