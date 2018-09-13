@@ -105,6 +105,7 @@ class MainPage extends Component {
         })
         if (checkedSongs.length == 0){
             track.addedBy = this.state.userId.email;
+            track.addedByKey = this.state.firebaseUserId;
             track.votes = 0;
             firebase.database().ref(`/queue`).push(track);
         } else {
@@ -241,6 +242,7 @@ class MainPage extends Component {
 
     render() {
     
+        console.log(this.state.userId);
     let restS = this.state.remainingTime % 60;
     let wholeMinS = this.state.remainingTime - restS;
     let min = wholeMinS / 60;

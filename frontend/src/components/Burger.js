@@ -37,7 +37,7 @@ class Burger extends React.Component{
             Enter new SELEQT code
           </a>
 
-          { (this.props.userId.email == "theresesarlin@gmail.com" || this.props.userId.email == "marcus.mh93@gmail.com" || this.props.userId.email == "anton.bq@gmail.com") ?
+          { (this.props.userId.email == "anton.bq@gmail.com") ?
             <React.Fragment>
               <p className="menu-item" href="#" onClick={() => this.play()}>
                 Initiate

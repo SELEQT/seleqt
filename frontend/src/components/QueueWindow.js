@@ -59,6 +59,13 @@ class QueueWindow extends Component {
       this.props.reducePoints();
 
       firebase.database().ref(`/queue/${track.key}`).set(track);
+      let myPoints;
+      firebase.database().ref(`/users/${track.addedByKey}/points`).once('value', (snapshot) => {
+        myPoints = snapshot.val();
+        myPoints += 2;
+        firebase.database().ref(`/users/${track.addedByKey}/points`).set(myPoints);
+      })
+      
     }
     else {
       if (!mySong){
