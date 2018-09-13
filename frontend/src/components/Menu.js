@@ -2,22 +2,17 @@ import React from 'react';
 import Menu from "react-burger-menu/lib/menus/slide";
 
 
+
 export default props => {
   return (
     <div className="menuFlex">
-
-
-      {/* <div className="logoFlexContainer">
-
-      </div> */}
-
       <div className="menu">
         <Menu right>
           <a className="menu-item" href="#">
             Home
           </a>
 
-          <a className="menu-item" href="#">
+          <a className="menu-item" href="./MenuAbout.html">
             About
           </a>
 

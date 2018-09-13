@@ -13,7 +13,7 @@ class MainPage extends Component {
 
         state = {
           queuedTracks: [],
-          goToQueue: false,
+          goToQueue: true,
           popped: false,
           currentLoop: "",
           devices: "5326eff26026e253173bf71d0aa50e2492b49c2a",
@@ -200,8 +200,17 @@ class MainPage extends Component {
                     <nav className="nav">
                         <div className="slider">
                             <div className="sliderWindow">
-                                <button className="switch" onClick={() => this.setState({ goToQueue: false })}> Search </button>
-                                <button className="switch" onClick={() => this.setState({ goToQueue: true })}> Queue </button>
+                                { this.state.goToQueue == true ?
+                                <React.Fragment>
+                                    <button className="switch" onClick={() => this.setState({ goToQueue: false })}> Search </button>
+                                        <button className="switch activeSwitch" onClick={() => this.setState({ goToQueue: true })}> Queue </button>
+                                </React.Fragment>
+                                :
+                                <React.Fragment>
+                                        <button className="switch activeSwitch" onClick={() => this.setState({ goToQueue: false })}> Search </button>
+                                    <button className="switch" onClick={() => this.setState({ goToQueue: true })}> Queue </button>
+                                </React.Fragment>
+                                }
                             </div>
                         </div>
                     </nav>

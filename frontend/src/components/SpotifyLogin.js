@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import seleqtIcon from "../images/seleqt_icon_gradient.png";
 
 class SpotifyLogin extends Component {
 

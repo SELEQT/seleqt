@@ -134,14 +134,14 @@ class Player extends Component {
                     <div className="nowPlayingFlexItem">
                         <div>
                         { this.props.queuedTracks[0] &&
-                            <p className="nowPlayingText master">Now playing: {this.props.queuedTracks[0].name} by {this.props.queuedTracks[0].artists[0].name}</p>
+                                <p className="nowPlayingText master"> <span className="nowPlayingTextStyle">Now playing:</span> {this.props.queuedTracks[0].name} · <span className="playerArtistText">{this.props.queuedTracks[0].artists[0].name}</span></p>
                         }
                         </div>
                         <div className="myProgress">
                             { this.props.queuedTracks[0] &&
                             <div>
                                 <div className="emptyMyBar"></div>
-                                <p className="remainingTime">{min} m {Math.round(restS)} s</p>
+                                <p className="remainingTime"><span className="far fa-clock"> </span> {min} m {Math.round(restS)} s</p>
                             </div>
                             }
                             <div className="myBar"></div>
