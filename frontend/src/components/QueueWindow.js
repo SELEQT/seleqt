@@ -100,7 +100,7 @@ class QueueWindow extends Component {
         <div className="queueHeader">
           <div className="queueHeaderText">
             <h1> Active Queue </h1>
-            <h2> at 'Restaurant-name' </h2>
+            <h2> at 'Name' </h2>
           </div>
         </div>
         <div className="queue">

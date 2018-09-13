@@ -181,9 +181,9 @@ h2 {
   border-radius: 5px;
   margin-right: 2.2vw;
   margin-left: 2.2vw;
-  height: 60vh;
+  height: 65vh;
   background-color: rgba(93, 93, 93, 1);
-  box-shadow: 0 1px 1px -1px gray;
+  box-shadow: 0 1px 1px -1px rgba(40, 40, 40, 1);;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -225,6 +225,7 @@ h2 {
   border-radius: 5px;
   height: 64px;
   margin-left: 2.5vw;
+
 }
 
 .info {
@@ -357,14 +358,21 @@ h2 {
 
 .footer {
   background-color: rgba(68, 68, 68, 1);
-  height: 30vh;
+  height: 25vh;
   flex: 1;
-  display:flex;
+  display: flex;
   flex-direction: column;
   
 }
 
 /* Now Playing */
+/* .nowPlaying {
+  
+} */
+
+.player {
+  height: 65%;
+}
 
 .nowPlayingFlexContainer {
   display: flex;
@@ -401,26 +409,44 @@ h2 {
 }
 
 /* Main Page Footer Buttons */
+.slider {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  padding: 0.1em;
+
+}
+
+.sliderWindow {
+  border: 1.9px solid rgba(239, 147, 0, 1);
+  width: 15em;
+  border-radius: 0.3em;
+  background-color: rgba(93, 93, 93, 1);
+
+
+}
 
 .switch {
   padding: 0.5em;
+  width: 50%;
   color: rgba(236, 236, 236, 1);
-  width: 25%;
+  background-color: rgba(93, 93, 93, 1);
   border: none;
-  border-radius: 0.3em;
-  box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.2);
+  border-radius: 0.10em;
   font-size: 1em;
-  margin-left: 0.5em;
-  margin-top: 0.5em;
   outline: none;
+
+}
+
+
+.activeSwitch {
+    /* transform: translate(1px, 2px); */
   background: rgba(239, 147, 0, 1);; /* fallback for old browsers */
   background: -webkit-linear-gradient(to bottom, #fe8c00, #f83600); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to bottom, #fe8c00, #f83600); 
+  background: linear-gradient(to bottom, #fe8c00, #f83600);
 }
-   
-.switch:active {
-  transform: translate(1px, 2px);
-}
+
+
 
 /* Main Page Footer Now Playing Window */
 
@@ -429,6 +455,20 @@ h2 {
   height: 50%;
   flex: 1;
   background-color:rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 0px 5px rgba(40, 40, 40, 1);
+}
+
+.nowPlayingTextStyle {
+  font-weight: 700;
+}
+
+.playerArtistText {
+  font-weight: 200; 
+  font-style: italic;
+}
+
+.fa-clock {
+  font-size: 1em;
 }
 
 .remainingTime {
@@ -457,12 +497,14 @@ h2 {
   height: 10px;
   border-radius: 15px;
   background: linear-gradient(to right, #fe8c00 20%, #f83600 70%);
-  /* background: linear-gradient(to right, #cc2b5e 20%, #753a88 70%); */
   z-index: 1;
 }
 
 .nav {
-  height: 50%;
+  height: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 /* --------------------------------------------------------------------------------- */
 

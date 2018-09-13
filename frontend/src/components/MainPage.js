@@ -15,7 +15,7 @@ class MainPage extends Component {
 
     state = {
         queuedTracks: [],
-        goToQueue: false,
+        goToQueue: true,
         popped: false,
         currentLoop: "",
         devices: "5326eff26026e253173bf71d0aa50e2492b49c2a",
@@ -277,8 +277,21 @@ class MainPage extends Component {
 
             <footer className="footer">
                 <nav className="nav">
-                    <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Search </button>
-                    <button className="switch" onClick={() => this.setState({ goToQueue: !this.state.goToQueue })}> Queue </button>
+                <div className="slider">
+                            <div className="sliderWindow">
+                                { this.state.goToQueue == true ?
+                                <React.Fragment>
+                                    <button className="switch" onClick={() => this.setState({ goToQueue: false })}> Search </button>
+                                        <button className="switch activeSwitch" onClick={() => this.setState({ goToQueue: true })}> Queue </button>
+                                </React.Fragment>
+                                :
+                                <React.Fragment>
+                                        <button className="switch activeSwitch" onClick={() => this.setState({ goToQueue: false })}> Search </button>
+                                    <button className="switch" onClick={() => this.setState({ goToQueue: true })}> Queue </button>
+                                </React.Fragment>
+                                }
+                                </div>
+                                </div>
                 </nav>
 
                 <React.Fragment>
@@ -293,17 +306,18 @@ class MainPage extends Component {
                             } />
                     }
                     </div>
+
                     <div className="nowPlayingFlexItem"> 
                         <div>
                         { this.state.queuedTracks[0] &&
-                            <p className="nowPlayingText master">Now playing: {this.state.queuedTracks[0].name} by {this.state.queuedTracks[0].artists[0].name}</p>
+                                <p className="nowPlayingText master"> <span className="nowPlayingTextStyle">Now playing:</span> {this.state.queuedTracks[0].name} · <span className="playerArtistText">{this.state.queuedTracks[0].artists[0].name}</span></p>
                         }
                         </div>
                         <div className="myProgress">
                             { this.state.queuedTracks[0] && 
                             <div>
                                 <div className="emptyMyBar"></div>
-                                <p className="remainingTime">{min} m {Math.round(restS)} s</p>
+                                <p className="remainingTime"><span className="far fa-clock"> </span> {min} m {Math.round(restS)} s</p>
                             </div>
                             }
                             <div className="myBar"></div>
