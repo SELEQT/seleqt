@@ -73,19 +73,13 @@ class MainPage extends Component {
     }
 
     checkUser = (users) => {
-        // this.addUserToFirebase(this.state.userId)           
         let checkedUsers = users.filter((user) => {
             return user.email == this.state.userId.email
         })
-        console.log(checkedUsers);
-        // console.log(checkedUsers[0].points)
         if (checkedUsers.length == 0) {
             this.addUserToFirebase(this.state.userId)
         } 
-        else {
-            // this.setState({ myCurrentPoints: checkedUsers[0].points });
-        }
-
+        
         firebase.database().ref(`/users/${checkedUsers[0].key}`).on('value', (snapshot) => {
             let user = snapshot.val();
             this.setState({ 
@@ -93,6 +87,7 @@ class MainPage extends Component {
                 firebaseUserId: checkedUsers[0].key
             });
         })
+
     }
 
     addUserToFirebase = (data) => {
@@ -109,6 +104,7 @@ class MainPage extends Component {
             return song.id == track.id
         })
         if (checkedSongs.length == 0){
+            track.addedBy = this.state.userId.email;
             track.votes = 0;
             firebase.database().ref(`/queue`).push(track);
         } else {
@@ -134,9 +130,7 @@ class MainPage extends Component {
         firebase.database().ref(`/queue/${track.key}`).set(track);
     }
 
-    displayTimer = () => {
-        /* Set variables for now playing progress bar */
-        
+    displayTimer = () => {        
         const progressBar = document.querySelector('.myBar');
 
         firebase.database().ref(`/nowPlaying/musicbar`).on('value', (snapshot) => {
@@ -159,7 +153,6 @@ class MainPage extends Component {
     playPlaylist = () => {
         if (!this.state.queuedTracks.length == 0){
             let orderedTracks = this.doubleOrder();
-            console.log(this.state.queuedTracks[0])
             this.setState({ canPlay: true });
             let parsed = queryString.parse(window.location.search);
             let accessToken = parsed.access_token;
@@ -179,9 +172,6 @@ class MainPage extends Component {
             let songIsPlaying = false;
 
             let width = 0;
-
-            
-            // console.log(updateTime)
 
             fetch(`https://api.spotify.com/v1/me/player/play?device_id=${this.state.devices}`, {
                 method: 'PUT',
@@ -226,7 +216,6 @@ class MainPage extends Component {
                         firebase.database().ref(`/nowPlaying/timer`).set(durationSeconds);
                     }
                 }
-                console.log("inrevalllet körs");
             }, 100)
         } else {
             firebase.database().ref(`/nowPlaying/musicbar`).set(0);
@@ -250,12 +239,7 @@ class MainPage extends Component {
         }) 
     }
 
-    
-
-    // https://api.spotify.com/v1/me/player/pause?device_id=add2238910e276e27e693896d661b1257859c046" -H "Accept: application/json"
-
     render() {
-
     
     let restS = this.state.remainingTime % 60;
     let wholeMinS = this.state.remainingTime - restS;
@@ -263,8 +247,11 @@ class MainPage extends Component {
 
     return (
         <div className="center mainPage">
-            <div className="header"> 
-            <div className="test"> {this.state.myCurrentPoints} </div>
+            <div className="header">
+            <div className="pointsFlexContainer">
+                <div className="pointsText"> <p> Points</p> </div>
+                <div className="points"> {this.state.myCurrentPoints} </div>
+            </div>
                 <img className="logo" alt="sd" src={seleqt} />
                 <Burger shutDown={this.shutDown} playPlayList={this.playPlaylist} playing={this.state.playing}/>
             </div>
@@ -273,64 +260,60 @@ class MainPage extends Component {
             <SearchWindow addToQueue={this.addToQueue}/>
             : 
             <QueueWindow queuedTracks={this.state.queuedTracks} setVotes={this.setVotes} reducePoints={this.reducePoints}
-            myCurrentPoints={this.state.myCurrentPoints}/>}
+            myCurrentPoints={this.state.myCurrentPoints} userId={this.state.userId}/>}
 
             <footer className="footer">
                 <nav className="nav">
                 <div className="slider">
-                            <div className="sliderWindow">
-                                { this.state.goToQueue == true ?
-                                <React.Fragment>
-                                    <button className="switch" onClick={() => this.setState({ goToQueue: false })}> Search </button>
-                                        <button className="switch activeSwitch" onClick={() => this.setState({ goToQueue: true })}> Queue </button>
-                                </React.Fragment>
-                                :
-                                <React.Fragment>
-                                        <button className="switch activeSwitch" onClick={() => this.setState({ goToQueue: false })}> Search </button>
-                                    <button className="switch" onClick={() => this.setState({ goToQueue: true })}> Queue </button>
-                                </React.Fragment>
-                                }
-                                </div>
-                                </div>
+                    <div className="sliderWindow">
+                        { this.state.goToQueue == true ?
+                        <React.Fragment>
+                            <button className="switch" onClick={() => this.setState({ goToQueue: false })}> Search </button>
+                                <button className="switch activeSwitch" onClick={() => this.setState({ goToQueue: true })}> Queue </button>
+                        </React.Fragment>
+                        :
+                        <React.Fragment>
+                                <button className="switch activeSwitch" onClick={() => this.setState({ goToQueue: false })}> Search </button>
+                            <button className="switch" onClick={() => this.setState({ goToQueue: true })}> Queue </button>
+                        </React.Fragment>
+                        }
+                        </div>
+                    </div>
                 </nav>
 
                 <React.Fragment>
-            <div className="nowPlaying">
-                <div className="nowPlayingFlexContainer">
-                    <div className="nowPlayingFlexItem">
-                    { this.state.queuedTracks[0] &&
-                        <img className="nowPlayingImage" alt="Track image" src={
-                            !this.state.queuedTracks[0].album.images
-                            ? missingAlbum
-                            : this.state.queuedTracks[0].album.images[2].url
-                            } />
-                    }
-                    </div>
-
-                    <div className="nowPlayingFlexItem"> 
-                        <div>
-                        { this.state.queuedTracks[0] &&
-                                <p className="nowPlayingText master"> <span className="nowPlayingTextStyle">Now playing:</span> {this.state.queuedTracks[0].name} · <span className="playerArtistText">{this.state.queuedTracks[0].artists[0].name}</span></p>
-                        }
-                        </div>
-                        <div className="myProgress">
-                            { this.state.queuedTracks[0] && 
-                            <div>
-                                <div className="emptyMyBar"></div>
-                                <p className="remainingTime"><span className="far fa-clock"> </span> {min} m {Math.round(restS)} s</p>
-                            </div>
+                    <div className="nowPlaying">
+                        <div className="nowPlayingFlexContainer">
+                            <div className="nowPlayingFlexItem">
+                            { this.state.queuedTracks[0] &&
+                                <img className="nowPlayingImage" alt="Track image" src={
+                                    !this.state.queuedTracks[0].album.images
+                                    ? missingAlbum
+                                    : this.state.queuedTracks[0].album.images[2].url
+                                    } />
                             }
-                            <div className="myBar"></div>
-                            
+                            </div>
+                            <div className="nowPlayingFlexItem"> 
+                                <div>
+                                { this.state.queuedTracks[0] &&
+                                        <p className="nowPlayingText master"> <span className="nowPlayingTextStyle">Now playing:</span> {this.state.queuedTracks[0].name} · <span className="playerArtistText">{this.state.queuedTracks[0].artists[0].name}</span></p>
+                                }
+                                </div>
+                                <div className="myProgress">
+                                    { this.state.queuedTracks[0] && 
+                                    <div>
+                                        <div className="emptyMyBar"></div>
+                                        <p className="remainingTime"><span className="far fa-clock"> </span> {min}m {Math.round(restS)}s</p>
+                                    </div>
+                                    }
+                                    <div className="myBar"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </React.Fragment>
-                
+                </React.Fragment>  
             </footer>
-        </div>
-        );
+        </div> );
     }
 }
 export default MainPage;

@@ -47,7 +47,13 @@ class QueueWindow extends Component {
   }
 
   upvote = (track) => {
-    if (!this.props.myCurrentPoints <= 0) {
+    let mySong = false;
+    if (this.props.userId.email == track.addedBy){
+      alert("You can't vote on a song that you queued.");
+      mySong = true;
+    }
+
+    if (!this.props.myCurrentPoints <= 0 && !mySong ) {
       track.votes++;
       this.order();
       this.props.reducePoints();
@@ -55,7 +61,9 @@ class QueueWindow extends Component {
       firebase.database().ref(`/queue/${track.key}`).set(track);
     }
     else {
-      alert("Not enough points.");
+      if (!mySong){
+        alert("Not enough points.");
+      }
     }
   }
 
@@ -65,7 +73,7 @@ class QueueWindow extends Component {
     let wholeMinS = s - restS;
     let min = wholeMinS / 60;
     
-    return min + "m " + Math.round(restS) + "s";
+    return " " + min + "m " + Math.round(restS) + "s";
   }
 
   render() {
@@ -85,7 +93,7 @@ class QueueWindow extends Component {
               <p className="songName">{annons.name}</p>
               <p className="artistName">{annons.artists[0].name} -</p>
               <p className="albumName">{annons.album.name}</p>
-              <p className="length"> {this.convertToMinSeC(annons.duration_ms)} </p>
+              <p className="length"> <span className="far fa-clock"> </span> {this.convertToMinSeC(annons.duration_ms)} </p>
           </div>
           <p className="voteNumber"> {annons.votes} </p>
 

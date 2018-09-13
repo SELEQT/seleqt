@@ -66,7 +66,7 @@ class MainPage extends Component {
         <p className="songName">{annons.name}</p>
         <p className="artistName">{annons.artists[0].name}</p>
         <p className="albumName">{annons.album.name}</p>
-        <p className="length"> {this.convertToMinSeC(annons.duration_ms)} </p>
+        <p className="length"> <span className="far fa-clock"> </span> {this.convertToMinSeC(annons.duration_ms)} </p>
 
       </div>
 
