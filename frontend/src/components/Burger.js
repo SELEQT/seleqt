@@ -2,7 +2,14 @@ import React from 'react';
 import Menu from "react-burger-menu/lib/menus/slide";
 
 
-export default props => {
+class Burger extends React.Component{
+
+  play = () => {
+    if (!this.props.playing)
+      this.props.playPlayList();
+  }
+
+  render(){
   return (
     <div className="menuFlex">
 
@@ -28,8 +35,18 @@ export default props => {
           <a className="menu-item" href="/">
             Enter new SELEQT code
           </a>
+
+          <p className="menu-item" href="#" onClick={() => this.play()}>
+            Initiate
+          </p>
+
+          <p className="menu-item" href="#" onClick={() => this.props.shutDown()}>
+            Shut down
+          </p>
+
         </Menu>
       </div>
     </div>
   );
-};
+}}
+export default Burger;

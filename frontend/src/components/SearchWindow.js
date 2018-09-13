@@ -37,7 +37,6 @@ class MainPage extends Component {
   }
 
   addToQueue = (track) => {
-    console.log(track);
     this.props.addToQueue(track);
   }
 

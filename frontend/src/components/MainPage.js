@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from "react-dom";
 import queryString from 'query-string';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
-import Menu from './Menu';
+import Burger from './Burger';
 import QueueWindow from './QueueWindow';
 import SearchWindow from './SearchWindow';
 import seleqt from '../images/seleqt.png';
@@ -24,7 +24,8 @@ class MainPage extends Component {
         userId: {},
         myCurrentPoints: 0,
         removeTopTrackFromQueue: false,
-        timePlayed: 0
+        timePlayed: 0,
+        firebaseUserId: ""
     }
         
     componentDidMount() {
@@ -49,7 +50,6 @@ class MainPage extends Component {
             this.setState({ queuedTracks: tracks})
             setTimeout( () => {
                 this.order();
-
             }, 100)
         })
 
@@ -64,6 +64,14 @@ class MainPage extends Component {
         this.setState({ queuedTracks : orderedTracks });
     }
 
+    doubleOrder = () => {
+        let orderedTracks = [...this.state.queuedTracks];
+        orderedTracks.sort(function(a, b){
+            return b.votes - a.votes
+        });
+        return orderedTracks;
+    }
+
     checkUser = (users) => {
         // this.addUserToFirebase(this.state.userId)           
         let checkedUsers = users.filter((user) => {
@@ -75,8 +83,16 @@ class MainPage extends Component {
             this.addUserToFirebase(this.state.userId)
         } 
         else {
-            this.setState({ myCurrentPoints: checkedUsers[0].points });
+            // this.setState({ myCurrentPoints: checkedUsers[0].points });
         }
+
+        firebase.database().ref(`/users/${checkedUsers[0].key}`).on('value', (snapshot) => {
+            let user = snapshot.val();
+            this.setState({ 
+                myCurrentPoints: user.points,
+                firebaseUserId: checkedUsers[0].key
+            });
+        })
     }
 
     addUserToFirebase = (data) => {
@@ -88,8 +104,16 @@ class MainPage extends Component {
     } 
 
     addToQueue = (track) => {
-        track.votes = 0;
-        firebase.database().ref(`/queue`).push(track);
+        let songs = [...this.state.queuedTracks];
+        let checkedSongs = songs.filter((song) => {
+            return song.id == track.id
+        })
+        if (checkedSongs.length == 0){
+            track.votes = 0;
+            firebase.database().ref(`/queue`).push(track);
+        } else {
+            alert(track.name + " is already queued.");
+        }
     }
 
     toArray = (firebaseObject) => {
@@ -101,14 +125,13 @@ class MainPage extends Component {
     }
 
     middleware = () => {
+        this.setState({ playing: false })
         this.playPlaylist();
     }   
 
     setVotesHigh = (track) => {
         track.votes = 100000;
-
         firebase.database().ref(`/queue/${track.key}`).set(track);
-    
     }
 
     displayTimer = () => {
@@ -127,8 +150,16 @@ class MainPage extends Component {
         })
     }
 
+    reducePoints = () => {
+        console.log(this.state.firebaseUserId)
+        let reducedPoints = this.state.myCurrentPoints - 10;
+        firebase.database().ref(`/users/${this.state.firebaseUserId}/points`).set(reducedPoints);
+    }
+
     playPlaylist = () => {
         if (!this.state.queuedTracks.length == 0){
+            let orderedTracks = this.doubleOrder();
+            console.log(this.state.queuedTracks[0])
             this.setState({ canPlay: true });
             let parsed = queryString.parse(window.location.search);
             let accessToken = parsed.access_token;
@@ -155,7 +186,7 @@ class MainPage extends Component {
             fetch(`https://api.spotify.com/v1/me/player/play?device_id=${this.state.devices}`, {
                 method: 'PUT',
                 body: JSON.stringify({
-                    "uris": [`${this.state.queuedTracks[0].uri}`],
+                    "uris": [`${orderedTracks[0].uri}`],
                     "position_ms": 0
                 }),
                 headers: { 'Authorization': 'Bearer ' + accessToken } 
@@ -195,6 +226,7 @@ class MainPage extends Component {
                         firebase.database().ref(`/nowPlaying/timer`).set(durationSeconds);
                     }
                 }
+                console.log("inrevalllet körs");
             }, 100)
         } else {
             firebase.database().ref(`/nowPlaying/musicbar`).set(0);
@@ -203,8 +235,28 @@ class MainPage extends Component {
         }
     }
 
+    shutDown = () => {
+        let parsed = queryString.parse(window.location.search);
+        let accessToken = parsed.access_token;
+
+        firebase.database().ref(`/nowPlaying/musicbar`).set(0);
+        firebase.database().ref(`/nowPlaying/timer`).set(0);
+        firebase.database().ref(`/queue`).remove();
+        this.setState({ queuedTracks: [] })
+        this.setState({ popped : true });
+        fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${this.state.devices}`, {
+            method: 'PUT',
+            headers: { 'Authorization': 'Bearer ' + accessToken } 
+        }) 
+    }
+
+    
+
+    // https://api.spotify.com/v1/me/player/pause?device_id=add2238910e276e27e693896d661b1257859c046" -H "Accept: application/json"
+
     render() {
 
+    
     let restS = this.state.remainingTime % 60;
     let wholeMinS = this.state.remainingTime - restS;
     let min = wholeMinS / 60;
@@ -212,15 +264,16 @@ class MainPage extends Component {
     return (
         <div className="center mainPage">
             <div className="header"> 
-            <div className="test"></div>
+            <div className="test"> {this.state.myCurrentPoints} </div>
                 <img className="logo" alt="sd" src={seleqt} />
-                <Menu />
+                <Burger shutDown={this.shutDown} playPlayList={this.playPlaylist} playing={this.state.playing}/>
             </div>
 
             {!this.state.goToQueue ?
             <SearchWindow addToQueue={this.addToQueue}/>
             : 
-            <QueueWindow queuedTracks={this.state.queuedTracks} setVotes={this.setVotes}/>}
+            <QueueWindow queuedTracks={this.state.queuedTracks} setVotes={this.setVotes} reducePoints={this.reducePoints}
+            myCurrentPoints={this.state.myCurrentPoints}/>}
 
             <footer className="footer">
                 <nav className="nav">
@@ -229,8 +282,6 @@ class MainPage extends Component {
                 </nav>
 
                 <React.Fragment>
-            <button className="testbutton" onClick={this.playPlaylist}> Play </button>
-        {/* {this.state.canPlay  */}
             <div className="nowPlaying">
                 <div className="nowPlayingFlexContainer">
                     <div className="nowPlayingFlexItem">
@@ -261,8 +312,6 @@ class MainPage extends Component {
                     </div>
                 </div>
             </div>
-            {/* :<div className="myBar"></div> */}
-        {/* } */}
         </React.Fragment>
                 
             </footer>

@@ -47,11 +47,16 @@ class QueueWindow extends Component {
   }
 
   upvote = (track) => {
-    track.votes++;
-    this.order();
-    // this.props.setVotes(this.state.queuedTracks);
+    if (!this.props.myCurrentPoints <= 0) {
+      track.votes++;
+      this.order();
+      this.props.reducePoints();
 
-    firebase.database().ref(`/queue/${track.key}`).set(track);
+      firebase.database().ref(`/queue/${track.key}`).set(track);
+    }
+    else {
+      alert("Not enough points.");
+    }
   }
 
   convertToMinSeC = (ms) => {
