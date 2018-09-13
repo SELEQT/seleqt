@@ -79,14 +79,15 @@ class MainPage extends Component {
         if (checkedUsers.length == 0) {
             this.addUserToFirebase(this.state.userId)
         } 
-        
-        firebase.database().ref(`/users/${checkedUsers[0].key}`).on('value', (snapshot) => {
-            let user = snapshot.val();
-            this.setState({ 
-                myCurrentPoints: user.points,
-                firebaseUserId: checkedUsers[0].key
-            });
-        })
+        else {
+            firebase.database().ref(`/users/${checkedUsers[0].key}`).on('value', (snapshot) => {
+                let user = snapshot.val();
+                this.setState({ 
+                    myCurrentPoints: user.points,
+                    firebaseUserId: checkedUsers[0].key
+                });
+            })
+        }
 
     }
 
@@ -96,6 +97,11 @@ class MainPage extends Component {
             email: data.email
         }
         firebase.database().ref(`/users`).push(user)
+
+        firebase.database().ref(`/users`).once('value', (snapshot) => {
+            let users = this.toArray(snapshot.val());
+            this.checkUser(users);
+        })
     } 
 
     addToQueue = (track) => {
