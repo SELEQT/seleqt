@@ -3,7 +3,12 @@ let request = require('request')
 let querystring = require('querystring')
 require('dotenv').config()
 
-let app = express()
+let app = express();
+app.use(express.static('frontend/build'));
+
+app.get('/', (request, response) => {
+  response.sendFile('index');
+})
 
 let redirect_uri =
   process.env.REDIRECT_URI ||
@@ -37,7 +42,7 @@ app.get('/callback', function(req, res) {
   }
   request.post(authOptions, function(error, response, body) {
     var access_token = body.access_token
-    let uri = process.env.FRONTEND_URI || 'http://localhost:3000/MainPage'
+    let uri = process.env.FRONTEND_URI || 'localhost:8888/MainPage'
     res.redirect(uri + '?access_token=' + access_token)
   })
 })
