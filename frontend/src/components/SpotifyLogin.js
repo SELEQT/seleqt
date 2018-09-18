@@ -19,7 +19,7 @@ class SpotifyLogin extends Component {
 
         </div>
         <div>
-          <button className="spotifyBtn" onClick={() => (window.location = "http://192.168.25.166:8888/login")}>
+          <button className="spotifyBtn" onClick={() => (window.location = "http://localhost:8888/login")}>
             Connect to Spotify
           </button>
         </div>

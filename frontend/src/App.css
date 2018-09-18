@@ -570,6 +570,19 @@ h2 {
   
 }
 
+/* Hover on all elements types i.e <p>, <li> etc */
+.menu-item:hover {
+  color: rgba(239, 147, 0, 1);
+}
+
+/* Cursor pointer on all element types i.e <p>, <li> etc */
+.menu-item {
+  cursor: pointer;
+}
+
+.activeDevice {
+  color: rgba(239, 147, 0, 1);
+}
 
 /* Position and sizing of burger button */
 .bm-burger-button {

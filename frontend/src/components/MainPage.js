@@ -18,14 +18,15 @@ class MainPage extends Component {
         goToQueue: true,
         popped: false,
         currentLoop: "",
-        devices: "5326eff26026e253173bf71d0aa50e2492b49c2a",
         playing: false,
         remainingTime: 0,
         userId: {},
         myCurrentPoints: 0,
         removeTopTrackFromQueue: false,
         timePlayed: 0,
-        firebaseUserId: ""
+        firebaseUserId: "",
+        devices: [],
+        activeDevice: ""
     }
         
     componentDidMount() {
@@ -44,6 +45,12 @@ class MainPage extends Component {
             let users = this.toArray(snapshot.val());
             this.checkUser(users);
         }))
+
+        fetch('https://api.spotify.com/v1/me/player/devices', {
+            headers: {'Authorization': 'Bearer ' + accessToken}
+        })
+        .then(response => response.json())
+        .then(data => this.setState({devices: data, activeDevice: data.devices[0].id})) //If no device has been chosen, run on the first found
 
         firebase.database().ref(`/queue`).on('value', (snapshot) => {
             let tracks = this.toArray(snapshot.val());
@@ -102,7 +109,11 @@ class MainPage extends Component {
             let users = this.toArray(snapshot.val());
             this.checkUser(users);
         })
-    } 
+    }
+    
+    changeDevice = (device) => {
+        this.setState({ activeDevice: device })
+    }
 
     addToQueue = (track) => {
         let songs = [...this.state.queuedTracks];
@@ -179,7 +190,7 @@ class MainPage extends Component {
 
             let width = 0;
 
-            fetch(`https://api.spotify.com/v1/me/player/play?device_id=${this.state.devices}`, {
+            fetch(`https://api.spotify.com/v1/me/player/play?device_id=${this.state.activeDevice}`, {
                 method: 'PUT',
                 body: JSON.stringify({
                     "uris": [`${orderedTracks[0].uri}`],
@@ -239,7 +250,7 @@ class MainPage extends Component {
         firebase.database().ref(`/queue`).remove();
         this.setState({ queuedTracks: [] })
         this.setState({ popped : true });
-        fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${this.state.devices}`, {
+        fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${this.state.activeDevice}`, {
             method: 'PUT',
             headers: { 'Authorization': 'Bearer ' + accessToken } 
         }) 
@@ -259,7 +270,7 @@ class MainPage extends Component {
                 <div className="points"> {this.state.myCurrentPoints} </div>
             </div>
                 <img className="logo" alt="sd" src={seleqt} />
-                <Burger shutDown={this.shutDown} playPlayList={this.playPlaylist} playing={this.state.playing} userId={this.state.userId}/>
+                <Burger shutDown={this.shutDown} playPlayList={this.playPlaylist} playing={this.state.playing} userId={this.state.userId} devices={this.state.devices} activeDevice={this.changeDevice}/>
             </div>
 
             {!this.state.goToQueue ?
