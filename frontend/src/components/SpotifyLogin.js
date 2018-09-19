@@ -19,7 +19,7 @@ class SpotifyLogin extends Component {
 
         </div>
         <div>
-          <button className="spotifyBtn" onClick={() => (window.location = "https://salty-lake-18388.herokuapp.com/login")}>
+          <button className="spotifyBtn" onClick={() => (window.location = "https://glacial-meadow-88529.herokuapp.com/login")}>
             Connect to Spotify
           </button>
         </div>

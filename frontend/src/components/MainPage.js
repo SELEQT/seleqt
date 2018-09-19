@@ -122,6 +122,7 @@ class MainPage extends Component {
         })
         if (checkedSongs.length == 0){
             track.addedBy = this.state.userId.email;
+            track.addedByKey = this.state.firebaseUserId;
             track.votes = 0;
             firebase.database().ref(`/queue`).push(track);
         } else {
