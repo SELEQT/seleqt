@@ -8,6 +8,12 @@ import './App.css'
 
 class App extends Component {
 
+  componentDidMount() {
+    let parsed = queryString.parse(window.location.search);
+    let accessToken = parsed.access_token;
+    this.setState({accessToken: accessToken});
+  }
+
   render() {
     return (
       <BrowserRouter>

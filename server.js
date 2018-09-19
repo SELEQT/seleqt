@@ -5,12 +5,6 @@ require('dotenv').config()
 
 let app = express();
 
-app.use(express.static('frontend/build'));
-
-app.get('/', (req, res) => {
-  res-sendFile('index');
-});
-
 let redirect_uri =
   process.env.REDIRECT_URI ||
   'http://localhost:8888/callback';
@@ -47,6 +41,12 @@ app.get('/callback', function(req, res) {
     res.redirect(uri + '?access_token=' + access_token)
   })
 })
+
+app.use(express.static('frontend/build'));
+
+app.get('/', (req, res) => {
+  res-sendFile('index');
+});
 
 let port = process.env.PORT || 8888
 console.log(`Listening on port ${port}. Go /login to initiate authentication flow.`)
