@@ -518,6 +518,7 @@ h2 {
   border-radius: 15px;
   background: linear-gradient(to right, #fe8c00 20%, #f83600 70%);
   z-index: 1;
+  transition: linear 1s;
 }
 
 .nav {

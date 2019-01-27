@@ -182,11 +182,7 @@ class MainPage extends Component {
             this.setVotesHigh(this.state.queuedTracks[0]);
             let duration = this.state.queuedTracks[0].duration_ms;
             let startTime;
-            let timePlayed = 0;
-            let ticker = 0;
             let secondsOfSong = 0;
-            let updateTime = duration/1000;
-            let tickerWidth = 10/updateTime;
             let songIsPlaying = false;
 
             let width = 0;
@@ -225,16 +221,15 @@ class MainPage extends Component {
                     
                     if (this.state.timePlayed > 0){
                         songIsPlaying = true
-                        width = (this.state.timePlayed / duration) * 100;
+                        width = ((this.state.timePlayed + 1000) / duration) * 100; // ~1s delay of first this.setState({ timeplayed }), added 1s to comenpensate
                         firebase.database().ref(`/nowPlaying/musicbar`).set(width);
                         
-                        let durationSeconds = (duration / 1000 ) - (this.state.timePlayed / 1000);
-                        let seconds = Math.round(durationSeconds - secondsOfSong); 
-                        
+                        let durationSeconds = Math.round((duration / 1000 ) - ((this.state.timePlayed + 1000) / 1000));
+                        console.log(durationSeconds)
                         firebase.database().ref(`/nowPlaying/timer`).set(durationSeconds);
                     }
                 }
-            }, 100)
+            }, 1000)
         } else {
             firebase.database().ref(`/nowPlaying/musicbar`).set(0);
             firebase.database().ref(`/nowPlaying/timer`).set(0);
