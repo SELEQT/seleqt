@@ -26,7 +26,8 @@ class MainPage extends Component {
         timePlayed: 0,
         firebaseUserId: "",
         devices: [],
-        activeDevice: ""
+        activeDevice: "",
+        autoAdd: true
     }
         
     componentDidMount() {
@@ -45,6 +46,11 @@ class MainPage extends Component {
             let users = this.toArray(snapshot.val());
             this.checkUser(users);
         }))
+
+        fetch(`https://api.spotify.com/v1/recommendations?limit=1&market=SV&seed_artists=${"4dpARuHxo51G3z768sgnrY"}&min_energy=0.4&min_popularity=50`, {
+                    headers: { 'Authorization': 'Bearer ' + accessToken }
+                }).then(response => response.json())
+                .then(data => {console.log(data.tracks[0].id)})
 
         fetch('https://api.spotify.com/v1/me/player/devices', {
             headers: {'Authorization': 'Bearer ' + accessToken}
@@ -130,6 +136,21 @@ class MainPage extends Component {
         }
     }
 
+    autoAddToQueue = (track) => {
+        let songs = [...this.state.queuedTracks];
+        let checkedSongs = songs.filter((song) => {
+            return song.id == track.id
+        })
+        if (checkedSongs.length == 0){
+            
+            track.votes = 0;
+            firebase.database().ref(`/queue`).push(track);
+        }
+        else {
+            alert(track.name + " is already queued.");
+        }
+    }
+
     toArray = (firebaseObject) => {
         let array = []
         for (let item in firebaseObject) {
@@ -170,6 +191,24 @@ class MainPage extends Component {
 
     playPlaylist = () => {
         if (!this.state.queuedTracks.length == 0){
+            
+            if (this.state.queuedTracks.length == 1) {
+
+                let parsed = queryString.parse(window.location.search);
+                let accessToken = parsed.access_token;
+
+                console.log("ADD to")
+                fetch(`https://api.spotify.com/v1/recommendations?limit=1&market=SV&seed_artists=${"4dpARuHxo51G3z768sgnrY"}&min_energy=0.4&min_popularity=50`, {
+                    headers: { 'Authorization': 'Bearer ' + accessToken }
+                }).then(response => response.json())
+                .then(data => {this.autoAddToQueue(data.tracks[0].id)})
+                
+            
+            }
+
+            else {
+                console.log("NOT ADD TO")
+
             let orderedTracks = this.doubleOrder();
             this.setState({ canPlay: true });
             let parsed = queryString.parse(window.location.search);
@@ -230,11 +269,20 @@ class MainPage extends Component {
                     }
                 }
             }, 1000)
-        } else {
+        }
+    }
+        
+        else if (this.state.autoAdd) {
+            
+        }
+
+        else {
             firebase.database().ref(`/nowPlaying/musicbar`).set(0);
             firebase.database().ref(`/nowPlaying/timer`).set(0);
             console.log("ADASDADAS")
         }
+
+        
     }
 
     shutDown = () => {
