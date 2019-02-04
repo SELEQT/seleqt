@@ -60,7 +60,7 @@ class MainPage extends Component {
         ? missingAlbum
         : annons.album.images[2].url
         } 
-        
+
         />
       <div className="info">
         <p className="songName">{annons.name}</p>

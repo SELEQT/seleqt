@@ -136,6 +136,11 @@ class MainPage extends Component {
         }
     }
 
+    /*  Similar to addToQueue() but used during autoAdd by spotify recommendation 
+        Database value addedBy SELEQT and addedByKey AutoAdded
+        Can be utilized in the future for specific handling of autoadded tracks 
+    */
+
     autoAddToQueue = (track) => {
         let songs = [...this.state.queuedTracks];
         let checkedSongs = songs.filter((song) => {
@@ -143,6 +148,8 @@ class MainPage extends Component {
         })
         if (checkedSongs.length == 0){
             
+            track.addedBy = "SELEQT";
+            track.addedByKey = "AutoAdded";
             track.votes = 0;
             firebase.database().ref(`/queue`).push(track);
         }
@@ -191,23 +198,24 @@ class MainPage extends Component {
 
     playPlaylist = () => {
         if (!this.state.queuedTracks.length == 0){
-            
+
+
+            /*  If theres only 1 track left in queue, use that track and run spotify seed recommendation to get a similar track
+                AutoAdd recommended track to queuelist by calling autoAddToQueue() 
+                API Documentation https://developer.spotify.com/console/get-recommendations/?limit=&market=US&seed_artists=4YwbSZaYeYja8Umyt222Qf&seed_genres=&seed_tracks=0c6xIDDpzE81m2q797ordA&min_acousticness=&max_acousticness=&target_acousticness=&min_danceability=&max_danceability=&target_danceability=&min_duration_ms=&max_duration_ms=&target_duration_ms=&min_energy=0.4&max_energy=&target_energy=&min_instrumentalness=&max_instrumentalness=&target_instrumentalness=&min_key=&max_key=&target_key=&min_liveness=&max_liveness=&target_liveness=&min_loudness=&max_loudness=&target_loudness=&min_mode=&max_mode=&target_mode=&min_popularity=50&max_popularity=&target_popularity=&min_speechiness=&max_speechiness=&target_speechiness=&min_tempo=&max_tempo=&target_tempo=&min_time_signature=&max_time_signature=&target_time_signature=&min_valence=&max_valence=&target_valence=
+            */
+
             if (this.state.queuedTracks.length == 1) {
 
                 let parsed = queryString.parse(window.location.search);
                 let accessToken = parsed.access_token;
-
-                console.log("ADD to")
-                fetch(`https://api.spotify.com/v1/recommendations?limit=1&market=SV&seed_artists=${"4dpARuHxo51G3z768sgnrY"}&min_energy=0.4&min_popularity=50`, {
+    
+                console.log(this.state.queuedTracks[0].id)
+                fetch(`https://api.spotify.com/v1/recommendations?limit=1&market=SV&seed_tracks=${this.state.queuedTracks[0].id}&min_energy=0.4&min_popularity=50`, {
                     headers: { 'Authorization': 'Bearer ' + accessToken }
                 }).then(response => response.json())
-                .then(data => {this.autoAddToQueue(data.tracks[0].id)})
-                
-            
+                .then(data => {this.autoAddToQueue(data.tracks[0])})
             }
-
-            else {
-                console.log("NOT ADD TO")
 
             let orderedTracks = this.doubleOrder();
             this.setState({ canPlay: true });
@@ -269,11 +277,6 @@ class MainPage extends Component {
                     }
                 }
             }, 1000)
-        }
-    }
-        
-        else if (this.state.autoAdd) {
-            
         }
 
         else {
