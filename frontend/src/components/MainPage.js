@@ -35,7 +35,40 @@ class MainPage extends Component {
         progressBar.style.width = 0 + '%';
 
         let parsed = queryString.parse(window.location.search);
-        let accessToken = parsed.access_token;
+
+        let refreshToken = parsed.refresh_token;
+
+
+        /*  Refresh_token API Call <----------
+            Get request to seleqt oauth backend. Sends refresh_token from url as param.
+            Response: get a new access_token
+            When the response is completed run the rest of the logic in componentDidMount
+            by calling the function componentDidMountLogic. Input response as input parameter
+        */
+        fetch(`http://localhost:8888/refresh_token?refresh_token=${refreshToken}`, {
+            method: "GET"
+        })
+        .then(response => response.json())
+        .then(data => this.componentDidMountLogic(data.access_token))        
+    
+    }   // --------> End function componentDidMount   
+
+
+    /***************************************** 
+    
+    ----------> Function sektion <------------
+    
+    ******************************************/
+
+
+    /*  Function that contains all logic that shall be done at componentDidMount
+        Reason for putting the logic in its own function is because this logic should
+        only run once the fetch for retrieving the refreshtoken is complete
+        
+        Takes the accessToken from the refresh_token API call as input parameter
+    */
+
+    componentDidMountLogic = (accessToken) => {
 
         fetch('https://api.spotify.com/v1/me', {
             headers: {'Authorization': 'Bearer ' + accessToken}
@@ -48,9 +81,9 @@ class MainPage extends Component {
         }))
 
         fetch(`https://api.spotify.com/v1/recommendations?limit=1&market=SV&seed_artists=${"4dpARuHxo51G3z768sgnrY"}&min_energy=0.4&min_popularity=50`, {
-                    headers: { 'Authorization': 'Bearer ' + accessToken }
-                }).then(response => response.json())
-                .then(data => {console.log(data.tracks[0].id)})
+            headers: { 'Authorization': 'Bearer ' + accessToken }
+        }).then(response => response.json())
+        .then(data => {console.log("Data Tracks " + data.tracks[0].id)})
 
         fetch('https://api.spotify.com/v1/me/player/devices', {
             headers: {'Authorization': 'Bearer ' + accessToken}
@@ -196,6 +229,10 @@ class MainPage extends Component {
         firebase.database().ref(`/users/${this.state.firebaseUserId}/points`).set(reducedPoints);
     }
 
+    /* refreshToken = () => {
+        fetch(localhost:8888)
+    } */
+
     playPlaylist = () => {
         if (!this.state.queuedTracks.length == 0){
 
@@ -211,7 +248,7 @@ class MainPage extends Component {
                 let accessToken = parsed.access_token;
     
                 console.log(this.state.queuedTracks[0].id)
-                fetch(`https://api.spotify.com/v1/recommendations?limit=1&market=SV&seed_tracks=${this.state.queuedTracks[0].id}&min_energy=0.4&min_popularity=50`, {
+                fetch(`https://api.spotify.com/v1/recommendations?limit=1&market=SV&seed_tracks=${this.state.queuedTracks[0].id}&min_energy=0.4`, {
                     headers: { 'Authorization': 'Bearer ' + accessToken }
                 }).then(response => response.json())
                 .then(data => {this.autoAddToQueue(data.tracks[0])})
