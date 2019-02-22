@@ -19,7 +19,7 @@ class SpotifyLogin extends Component {
 
         </div>
         <div>
-          <button className="spotifyBtn" onClick={() => (window.location = "http://localhost:8888/login")}>
+          <button className="spotifyBtn" onClick={() => (window.location = "https://seleqt-backend.herokuapp.com/login")}>
             Connect to Spotify
           </button>
         </div>
