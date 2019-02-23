@@ -17,9 +17,20 @@ class MainPage extends Component {
   }
 
   componentDidMount() {
-    let parsed = queryString.parse(window.location.search);
-    let accessToken = parsed.access_token;
+    /* let parsed = queryString.parse(window.location.search);
+    let accessToken = this.props.accessToken;
     this.setState({accessToken: accessToken});
+    console.log(this.props.accessToken) */
+
+    let parsed = queryString.parse(window.location.search);
+
+    let refreshToken = parsed.refresh_token;
+
+    fetch(`http://localhost:8888/refresh_token?refresh_token=${refreshToken}`, {
+            method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => this.setState({accessToken: data.access_token}))
 
   }
   

@@ -27,7 +27,8 @@ class MainPage extends Component {
         firebaseUserId: "",
         devices: [],
         activeDevice: "",
-        autoAdd: true
+        autoAdd: true,
+        accessToken: ""
     }
         
     componentDidMount() {
@@ -49,7 +50,7 @@ class MainPage extends Component {
             method: "GET"
         })
         .then(response => response.json())
-        .then(data => this.componentDidMountLogic(data.access_token))        
+        .then(data => this.setState({accessToken: data.access_token}, this.componentDidMountLogic(data.access_token)))        
     
     }   // --------> End function componentDidMount   
 
@@ -80,10 +81,10 @@ class MainPage extends Component {
             this.checkUser(users);
         }))
 
-        fetch(`https://api.spotify.com/v1/recommendations?limit=1&market=SV&seed_artists=${"4dpARuHxo51G3z768sgnrY"}&min_energy=0.4&min_popularity=50`, {
+        /* fetch(`https://api.spotify.com/v1/recommendations?limit=1&market=SV&seed_artists=${"4dpARuHxo51G3z768sgnrY"}&min_energy=0.4`, {
             headers: { 'Authorization': 'Bearer ' + accessToken }
         }).then(response => response.json())
-        .then(data => {console.log("Data Tracks " + data.tracks[0].id)})
+        .then(data => {console.log("Data Tracks " + data.tracks[0].id)}) */
 
         fetch('https://api.spotify.com/v1/me/player/devices', {
             headers: {'Authorization': 'Bearer ' + accessToken}
@@ -243,23 +244,19 @@ class MainPage extends Component {
             */
 
             if (this.state.queuedTracks.length == 1) {
-
-                let parsed = queryString.parse(window.location.search);
-                let accessToken = parsed.access_token;
     
                 console.log(this.state.queuedTracks[0].id)
                 fetch(`https://api.spotify.com/v1/recommendations?limit=1&market=SV&seed_tracks=${this.state.queuedTracks[0].id}&min_energy=0.4`, {
-                    headers: { 'Authorization': 'Bearer ' + accessToken }
+                    headers: { 'Authorization': 'Bearer ' + this.state.accessToken }
                 }).then(response => response.json())
                 .then(data => {this.autoAddToQueue(data.tracks[0])})
             }
 
             let orderedTracks = this.doubleOrder();
             this.setState({ canPlay: true });
-            let parsed = queryString.parse(window.location.search);
-            let accessToken = parsed.access_token;
+        
             this.setState({
-                accessToken: accessToken,
+     
                 popped : false,
                 playing: true
             });
@@ -277,13 +274,13 @@ class MainPage extends Component {
                     "uris": [`${orderedTracks[0].uri}`],
                     "position_ms": 0
                 }),
-                headers: { 'Authorization': 'Bearer ' + accessToken } 
+                headers: { 'Authorization': 'Bearer ' + this.state.accessToken } 
             })
             .then( startTime = Date.now() )
             const interval = setInterval(() =>{
 
                 fetch("https://api.spotify.com/v1/me/player", {
-                    headers: { 'Authorization': 'Bearer ' + accessToken } 
+                    headers: { 'Authorization': 'Bearer ' + this.state.accessToken } 
                 }).then(response => response.json())
                 .then(data => this.setState({ timePlayed: data.progress_ms }));
                 
@@ -326,8 +323,6 @@ class MainPage extends Component {
     }
 
     shutDown = () => {
-        let parsed = queryString.parse(window.location.search);
-        let accessToken = parsed.access_token;
 
         firebase.database().ref(`/nowPlaying/musicbar`).set(0);
         firebase.database().ref(`/nowPlaying/timer`).set(0);
@@ -336,7 +331,7 @@ class MainPage extends Component {
         this.setState({ popped : true });
         fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${this.state.activeDevice}`, {
             method: 'PUT',
-            headers: { 'Authorization': 'Bearer ' + accessToken } 
+            headers: { 'Authorization': 'Bearer ' + this.state.accessToken } 
         }) 
     }
 
