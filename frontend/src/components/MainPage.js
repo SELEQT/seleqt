@@ -7,7 +7,6 @@ import QueueWindow from './QueueWindow';
 import SearchWindow from './SearchWindow';
 import seleqt from '../images/seleqt.png';
 import firebase from '../firebase';
-import Player from './Player';
 import missingAlbum from '../images/seleqt_icon_gradient.png';
 
 
@@ -90,7 +89,11 @@ class MainPage extends Component {
             headers: {'Authorization': 'Bearer ' + accessToken}
         })
         .then(response => response.json())
-        .then(data => this.setState({devices: data, activeDevice: data.devices[0].id})) //If no device has been chosen, run on the first found
+        .then((data) => {
+            if (data.devices) {
+                this.setState({devices: data, activeDevice: data.devices[0].id})
+            }
+        }) //If no device has been chosen, run on the first found
 
         firebase.database().ref(`/queue`).on('value', (snapshot) => {
             let tracks = this.toArray(snapshot.val());
