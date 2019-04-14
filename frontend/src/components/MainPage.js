@@ -9,6 +9,9 @@ import seleqt from '../images/seleqt.png';
 import firebase from '../firebase';
 import missingAlbum from '../images/seleqt_icon_gradient.png';
 
+import { connect } from 'react-redux';
+import { getTracks } from '../actions/tracksActions';
+import PropTypes from 'prop-types';
 
 class MainPage extends Component {
 
@@ -38,6 +41,7 @@ class MainPage extends Component {
 
         let refreshToken = parsed.refresh_token;
 
+        // this.props.getTracks();
 
         /*  Refresh_token API Call <----------
             Get request to seleqt oauth backend. Sends refresh_token from url as param.
@@ -159,17 +163,23 @@ class MainPage extends Component {
     }
 
     addToQueue = (track) => {
+
+        /* Copy the state of queuedTracks and filter to see if track already exists in array */
+
         let songs = [...this.state.queuedTracks];
         let checkedSongs = songs.filter((song) => {
             return song.id == track.id
         })
+
+        /* If result from filter is empty, the song does not already exist */
+
         if (checkedSongs.length == 0){
             track.addedBy = this.state.userId.email;
             track.addedByKey = this.state.firebaseUserId;
             track.votes = 0;
             firebase.database().ref(`/queue`).push(track);
         } else {
-            alert(track.name + " is already queued.");
+            // alert(track.name + " is already queued.");
         }
     }
 
@@ -415,4 +425,14 @@ class MainPage extends Component {
         </div> );
     }
 }
-export default MainPage;
+
+/* MainPage.propTypes = {
+    getTracks: PropTypes.func.isRequired,
+    tracks: PropTypes.object.isRequired
+} */
+
+const mapStateToProps = (state) => ({
+    tracks: state.tracks
+});
+
+export default connect(mapStateToProps, { getTracks })(MainPage);

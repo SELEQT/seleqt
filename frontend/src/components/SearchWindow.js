@@ -5,7 +5,10 @@ import QueueWindow from './QueueWindow';
 import firebase from '../firebase';
 import missingAlbum from '../images/seleqt_icon_gradient.png';
 
-class MainPage extends Component {
+import { connect } from 'react-redux';
+import { getTracks, addTrack } from '../actions/tracksActions';
+
+class searchWindow extends Component {
 
   state = {
     serverData: {},
@@ -21,6 +24,8 @@ class MainPage extends Component {
     let accessToken = this.props.accessToken;
     this.setState({accessToken: accessToken});
     console.log(this.props.accessToken) */
+
+    this.props.getTracks();
 
     let parsed = queryString.parse(window.location.search);
 
@@ -48,7 +53,13 @@ class MainPage extends Component {
   }
 
   addToQueue = (track) => {
+
+    
+
     this.props.addToQueue(track);
+
+    this.props.addTrack(track, track.id);
+    console.log("track: " + track.id)
   }
 
   convertToMinSeC = (ms) => {
@@ -102,4 +113,8 @@ class MainPage extends Component {
   }
 }
 
-export default MainPage;
+const mapStateToProps = state => ({
+  tracks: state.tracks
+})
+
+export default connect(mapStateToProps, { getTracks, addTrack })(searchWindow);
