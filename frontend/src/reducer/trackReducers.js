@@ -1,14 +1,17 @@
-import { GET_TRACKS, ADD_TRACKS } from '../actions/types';
+import { GET_TRACKS, ADD_TRACKS, TRACKS_LOADING } from '../actions/types';
 
 const initialState = {
-    tracks: []
+    tracks: [],
+    loadin: false
 }
 
 export default function(state = initialState, action) {
     switch(action.type) {
         case GET_TRACKS:
             return {
-                ...state
+                ...state,
+                tracks: action.payload,
+                loading: false
             };
         case ADD_TRACKS:
 
@@ -23,6 +26,11 @@ export default function(state = initialState, action) {
                     ...state,
                     tracks: [action.payload, ...state.tracks]
                 }
+            }
+        case TRACKS_LOADING:
+            return {
+                ...state,
+                loading: true
             }
 
         default: 
