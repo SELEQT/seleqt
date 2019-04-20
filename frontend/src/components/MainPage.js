@@ -162,16 +162,16 @@ class MainPage extends Component {
         this.setState({ activeDevice: device })
     }
 
-    addToQueue = (track) => {
+    /* addToQueue = (track) => {
 
-        /* Copy the state of queuedTracks and filter to see if track already exists in array */
+        // Copy the state of queuedTracks and filter to see if track already exists in array
 
         let songs = [...this.state.queuedTracks];
         let checkedSongs = songs.filter((song) => {
             return song.id == track.id
         })
 
-        /* If result from filter is empty, the song does not already exist */
+        // If result from filter is empty, the song does not already exist
 
         if (checkedSongs.length == 0){
             track.addedBy = this.state.userId.email;
@@ -179,9 +179,9 @@ class MainPage extends Component {
             track.votes = 0;
             firebase.database().ref(`/queue`).push(track);
         } else {
-            // alert(track.name + " is already queued.");
+            alert(track.name + " is already queued.");
         }
-    }
+    } */
 
     /*  Similar to addToQueue() but used during autoAdd by spotify recommendation 
         Database value addedBy SELEQT and addedByKey AutoAdded

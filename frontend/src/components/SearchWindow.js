@@ -37,6 +37,8 @@ class searchWindow extends Component {
     .then(response => response.json())
     .then(data => this.setState({accessToken: data.access_token}))
 
+    
+
   }
   
   onHandleSearchInput = (event) => {
@@ -52,14 +54,26 @@ class searchWindow extends Component {
     }
   }
 
-  addToQueue = (track) => {
+  addToQueue = (trackToAdd) => {
 
-    
+    const { tracks } = this.props.track;
 
-    this.props.addToQueue(track);
+    let checkedSongs = tracks.filter((track) => {
+      return track.id == trackToAdd.id
+    })
 
+    if (checkedSongs.length === 0){
+      /* trackToAdd.addedBy = this.state.userId.email;
+      trackToAdd.addedByKey = this.state.firebaseUserId; */
+      trackToAdd.votes = 0;
+      this.props.addTrack(trackToAdd, trackToAdd.id);
+    }
+    else {
+      alert(trackToAdd.name + " is already queued.");
+    }
+/* 
     this.props.addTrack(track, track.id);
-    console.log("track: " + track.id)
+    console.log("track: " + track.id) */
   }
 
   convertToMinSeC = (ms) => {
@@ -72,6 +86,7 @@ class searchWindow extends Component {
   }
 
   render() {
+    
     let listOfResult;
     if (this.state.gotData) {
     const annonser = this.state.searchResult.tracks.items;
@@ -97,6 +112,7 @@ class searchWindow extends Component {
       <button className="addToQueue" onClick={() => this.addToQueue(annons)}>Queue</button>
     </div>);
   }
+  
     return (
     <div className="window">
       <div className="searchHeader">
@@ -113,8 +129,8 @@ class searchWindow extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  tracks: state.tracks
+const mapStateToProps = (state) => ({
+  track: state.track
 })
 
 export default connect(mapStateToProps, { getTracks, addTrack })(searchWindow);

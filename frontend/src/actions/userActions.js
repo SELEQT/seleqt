@@ -1,5 +1,5 @@
 import firebase from '../firebase';
-import { GET_TRACKS, ADD_TRACKS, TRACKS_LOADING } from './types';
+import { GET_USERID } from './types';
 
 
 /*  
@@ -19,19 +19,4 @@ export const getTracks = () => dispatch => {
             payload: orderedPayload
         })
     })
-}
-
-export const addTrack = (track, id) => dispatch => {
-    firebase.database().ref('/queue').push(track);
-    dispatch({
-        type: ADD_TRACKS,
-        payload: track,
-        payloadId: id
-    })
-}
-
-export const setTracksLoading = () => {
-    return {
-        type: TRACKS_LOADING
-    }
 }
