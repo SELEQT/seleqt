@@ -9,15 +9,22 @@ import { GET_TRACKS, ADD_TRACKS, TRACKS_LOADING } from './types';
 export const getTracks = () => dispatch => {
     dispatch(setTracksLoading());
     firebase.database().ref('/queue').on("value", snapshot => {
-        let orderedPayload = Object.values(snapshot.val())
-        console.log(orderedPayload)
-        orderedPayload.sort(function(a, b){
-            return b.votes - a.votes
-        });
-        dispatch({
-            type: GET_TRACKS,
-            payload: orderedPayload
-        })
+        if (snapshot.val() === null) {
+            dispatch({
+                type: GET_TRACKS,
+            })
+        }
+        else {
+            let orderedPayload = Object.values(snapshot.val())
+            console.log(orderedPayload)
+            orderedPayload.sort(function(a, b){
+                return b.votes - a.votes
+            });
+            dispatch({
+                type: GET_TRACKS,
+                payload: orderedPayload
+            })
+        }  
     })
 }
 

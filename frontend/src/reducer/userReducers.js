@@ -1,16 +1,21 @@
-import { GET_USERID } from '../actions/types'
+import { GET_USER, ADD_USER } from '../actions/types'
 
 const initialState = {
-    Users: [
+    users: [
 
     ]
 }
 
 export default function(state = initialState, action) {
     switch(action.type) {
-        case GET_USERID:
+        case GET_USER:
             return {
                 ...state
+            }
+        case ADD_USER:
+            return {
+                ...state,
+                users: [action.payload, ...state.users]
             }
         default:
             return state;

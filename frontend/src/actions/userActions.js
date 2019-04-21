@@ -1,13 +1,15 @@
-import firebase from '../firebase';
-import { GET_USERID } from './types';
+import { GET_USER, ADD_USER } from './types';
 
 
 /*  
     Take a snapshot of database and sort the payload by votes. Must convert firebase 
     snapshot to Object.values [{}] 
 */
-export const getTracks = () => dispatch => {
-    dispatch(setTracksLoading());
+export const getUser = () => {
+    return {
+        type: GET_USER,
+    }
+    /* dispatch(setTracksLoading());
     firebase.database().ref('/queue').on("value", snapshot => {
         let orderedPayload = Object.values(snapshot.val())
         console.log(orderedPayload)
@@ -18,5 +20,12 @@ export const getTracks = () => dispatch => {
             type: GET_TRACKS,
             payload: orderedPayload
         })
-    })
+    }) */
+}
+
+export const addUser = (email, id) => {
+    return {
+        type: ADD_USER,
+        payload: {email, id}
+    }
 }

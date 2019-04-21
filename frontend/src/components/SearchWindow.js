@@ -7,6 +7,7 @@ import missingAlbum from '../images/seleqt_icon_gradient.png';
 
 import { connect } from 'react-redux';
 import { getTracks, addTrack } from '../actions/tracksActions';
+import { getUser } from '../actions/userActions';
 
 class searchWindow extends Component {
 
@@ -25,7 +26,8 @@ class searchWindow extends Component {
     this.setState({accessToken: accessToken});
     console.log(this.props.accessToken) */
 
-    this.props.getTracks();
+    // Load user state from redux
+    this.props.getUser();
 
     let parsed = queryString.parse(window.location.search);
 
@@ -56,20 +58,33 @@ class searchWindow extends Component {
 
   addToQueue = (trackToAdd) => {
 
+    // Load state value of users and tracks from redux
     const { tracks } = this.props.track;
+    const { users } = this.props.user;
 
-    let checkedSongs = tracks.filter((track) => {
-      return track.id == trackToAdd.id
-    })
-
-    if (checkedSongs.length === 0){
-      /* trackToAdd.addedBy = this.state.userId.email;
-      trackToAdd.addedByKey = this.state.firebaseUserId; */
-      trackToAdd.votes = 0;
-      this.props.addTrack(trackToAdd, trackToAdd.id);
+    // Check if tracks is empty. If not empty, sorting needs to be applied
+    if (tracks) {
+      let checkedSongs = tracks.filter((track) => {
+        return track.id == trackToAdd.id
+      })
+      
+      if (checkedSongs.length === 0){
+        trackToAdd.addedBy = users[0].email;
+        trackToAdd.addedByKey = users[0].id;
+        trackToAdd.votes = 0;
+        console.log(trackToAdd)
+        this.props.addTrack(trackToAdd, trackToAdd.id);
+      }
+      else {
+        alert(trackToAdd.name + " is already queued.");
+      }
     }
     else {
-      alert(trackToAdd.name + " is already queued.");
+      trackToAdd.addedBy = users[0].email;
+      trackToAdd.addedByKey = users[0].id;
+      trackToAdd.votes = 0;
+      console.log(trackToAdd)
+      this.props.addTrack(trackToAdd, trackToAdd.id);
     }
 /* 
     this.props.addTrack(track, track.id);
@@ -130,7 +145,8 @@ class searchWindow extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  track: state.track
+  track: state.track,
+  user: state.user
 })
 
-export default connect(mapStateToProps, { getTracks, addTrack })(searchWindow);
+export default connect(mapStateToProps, { getTracks, addTrack, getUser })(searchWindow);

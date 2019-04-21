@@ -11,6 +11,7 @@ import missingAlbum from '../images/seleqt_icon_gradient.png';
 
 import { connect } from 'react-redux';
 import { getTracks } from '../actions/tracksActions';
+import { addUser } from '../actions/userActions';
 import PropTypes from 'prop-types';
 
 class MainPage extends Component {
@@ -40,6 +41,9 @@ class MainPage extends Component {
         let parsed = queryString.parse(window.location.search);
 
         let refreshToken = parsed.refresh_token;
+
+        // Load track list to redux state
+        this.props.getTracks();
 
         // this.props.getTracks();
 
@@ -108,6 +112,8 @@ class MainPage extends Component {
         })
 
         this.displayTimer();
+
+        
     }
 
     order = () => {
@@ -140,9 +146,10 @@ class MainPage extends Component {
                     myCurrentPoints: user.points,
                     firebaseUserId: checkedUsers[0].key
                 });
+                // Add firebase user to redux state
+                this.props.addUser(this.state.userId.email, checkedUsers[0].key)
             })
         }
-
     }
 
     addUserToFirebase = (data) => {
@@ -432,7 +439,8 @@ class MainPage extends Component {
 } */
 
 const mapStateToProps = (state) => ({
-    tracks: state.tracks
+    tracks: state.tracks,
+    users: state.users
 });
 
-export default connect(mapStateToProps, { getTracks })(MainPage);
+export default connect(mapStateToProps, { getTracks, addUser })(MainPage);
