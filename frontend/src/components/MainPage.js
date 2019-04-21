@@ -64,7 +64,7 @@ class MainPage extends Component {
 
     /***************************************** 
     
-    ----------> Function sektion <------------
+    ----------> Function section <------------
     
     ******************************************/
 
@@ -255,6 +255,15 @@ class MainPage extends Component {
     } */
 
     playPlaylist = () => {
+        let parsed = queryString.parse(window.location.search);
+        let refreshToken = parsed.refresh_token;
+        fetch(`http://localhost:8888/refresh_token?refresh_token=${refreshToken}`, {
+            method: "GET"
+        })
+        .then(response => response.json())
+        .then(data => this.setState({accessToken: data.access_token}, this.componentDidMountLogic(data.access_token))) 
+        console.log("REFRESH")
+
         if (!this.state.queuedTracks.length == 0){
 
 
