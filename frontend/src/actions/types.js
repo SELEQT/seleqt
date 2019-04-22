@@ -6,3 +6,5 @@ export const GET_USER           = 'GET_USER';
 export const ADD_USER           = 'ADD_USER';
 export const GET_ACCESS_CODE    = 'GET_ACCESS_CODE';
 export const ADD_ACCESS_CODE    = 'ADD_ACCESS_CODE';
+
+//ASDASd
